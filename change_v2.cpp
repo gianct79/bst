@@ -24,19 +24,22 @@ int main(int argc, char* argv[]) {
 
     std::map<int, size_t> billsQty;
 
-    if (change) {
+    if (change > 0) {
 
         for (auto it = bills.rbegin(); it != bills.rend(); ++it) {
 
             billsQty[*it] = change / *it;
             change = change % *it;
         }
+
+        std::cout << "\nqty of bills: ";
+
+        for (auto it = billsQty.begin(); it != billsQty.end(); ++it)
+            std::cout << it->first << " => " << it->second << ' ';
+
+    } else {
+        std::cout << "\nno!";
     }
-
-    std::cout << "\nqty of bills: ";
-
-    for (auto it = billsQty.begin(); it != billsQty.end(); ++it)
-        std::cout << it->first << " => " << it->second << ' ';
 
     return 0;
 }
