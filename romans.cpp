@@ -8,7 +8,7 @@
 
 int main(int argc, char* argv[]) {
 
-    std::cout << "romans 16:19 says..." std::endl;
+    std::cout << "romans 16:19 says..." << std::endl;
 
 	return 0;
 }
