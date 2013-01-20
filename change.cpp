@@ -10,10 +10,10 @@ int main(int argc, char* argv[]) {
 
     int trade, money;
 
-    std::cout << "sale value: ";
+    std::cout << "sale value..: ";
     std::cin >> trade;
 
-    std::cout << "money.....: ";
+    std::cout << "money.......: ";
     std::cin >> money;
 
     int change = money - trade;
