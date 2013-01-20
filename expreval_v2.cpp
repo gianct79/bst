@@ -1,0 +1,46 @@
+/*
+* Copied from Chicao. All rights reserved.
+*
+* Do not redistribute without permission.
+*/
+
+#include <iostream>
+#include <string>
+#include <cctype>
+
+int eval(const char *expr) {
+
+    int ax = 0;
+    int op = 1;
+
+    for (; *expr; ) {
+        if (isdigit(*expr)) {
+            int n = 0;
+            while (isdigit(*expr)) {
+                n *= 10;
+                n += *expr++ - '0';
+            }
+            ax += (op * n);
+            // reset flags
+            op = 1;
+        } else {
+            if (*expr == '+') {
+                /* op *= 1; */;
+            } else if(*expr == '-') {
+                op *= -1;
+            } else {
+                /* error */
+            }
+            ++expr;
+        }
+    }
+    return ax;
+}
+
+int main(int argc, char **argv) {
+
+    for(std::string expr; std::cin >> expr; ) {
+        std::cout << expr << " = ";
+        std::cout << eval(expr.c_str()) << std::endl;
+    }
+}
