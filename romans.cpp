@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
     romanDict[90] = "XC";
     romanDict[100] = "C";
     romanDict[400] = "CD";
-    romanDict[500] = "C";
+    romanDict[500] = "D";
     romanDict[900] = "CM";
     romanDict[1000] = "M";
 
