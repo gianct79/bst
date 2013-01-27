@@ -18,12 +18,18 @@ int stoi(const std::string &str) {
 
 int main(int argc, char* argv[]) {
 
-    std::string str("100 50 10 5 1");
-    std::cout << "enter bill values: ";
+    int money;
+    std::cin >> money;
 
+    int sale;
+    std::cin >> sale;
+
+    std::string str;
     getline(std::cin, str);
-    std::istringstream iss(str);
 
+    std::cout << std::endl;
+
+    std::istringstream iss(str);
     std::vector<std::string> tokens;
     std::copy(
         std::istream_iterator<std::string>(iss),
@@ -37,14 +43,6 @@ int main(int argc, char* argv[]) {
         return b < a;
     });
 
-    int sale, money;
-
-    std::cout << "sale value. : ";
-    std::cin >> sale;
-
-    std::cout << "money...... : ";
-    std::cin >> money;
-
     int change = money - sale;
 
     std::map<int, size_t> billsQty;
@@ -52,15 +50,15 @@ int main(int argc, char* argv[]) {
     if (change > 0) {
 
         for (auto it = bills.begin(); it != bills.end(); ++it) {
-
             billsQty[*it] = change / *it;
             change = change % *it;
         }
 
-        std::cout << "\nqty of bills: ";
-
-        for (auto it = billsQty.begin(); it != billsQty.end(); ++it)
-            std::cout << it->first << " => " << it->second << ' ';
+        for (auto it = billsQty.begin(); it != billsQty.end(); ++it) {
+            if (it->second) {
+                std::cout << it->second << " " << it->first << std::endl;
+            }
+        }
 
     } else {
         std::cout << "\nno!";
