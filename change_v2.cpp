@@ -26,7 +26,7 @@ int main(int argc, char* argv[]) {
 
     if (change > 0) {
 
-        for (auto it = bills.rbegin(); it != bills.rend(); ++it) {
+        for (auto it = bills.begin(); it != bills.end(); ++it) {
 
             billsQty[*it] = change / *it;
             change = change % *it;
