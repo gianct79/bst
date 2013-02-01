@@ -19,6 +19,15 @@ class stack {
     node *top_;
 
 public:
+    stack() : top_(nullptr) {
+    }
+    
+    ~stack() {
+        while (top_) {
+            pop();
+        }
+    }
+    
     void push(const T& v) {
         node *n = new node(v);
         
