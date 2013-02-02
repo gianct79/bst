@@ -1,3 +1,7 @@
+/*
+* Copyleft 1979-2013 Giancarlo Tomazelli. All rights reversed.
+*/
+
 #include <iostream>
 
 using namespace std;
