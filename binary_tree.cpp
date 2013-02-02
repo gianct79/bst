@@ -33,7 +33,10 @@ public:
 	Node *add(Node *parent, const T& v) {
 
 		if (!parent) {
-			parent = new Node(v, nullptr, nullptr);;
+            parent = new Node(v, nullptr, nullptr);
+			if (!root_) {
+				root_ = parent;
+			}			
 		} else if (v < parent->value) {
 			parent->left = add(parent->left, v);
 		} else if (v > parent->value) {
