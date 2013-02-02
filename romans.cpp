@@ -1,7 +1,5 @@
 /*
-* Copyright 1979-2013 Giancarlo Tomazelli. All rights reserved.
-*
-* Do not redistribute without permission.
+* Copyleft 1979-2013 Giancarlo Tomazelli. All rights reversed.
 */
 
 #include <iostream>
