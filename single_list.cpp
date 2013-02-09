@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <initializer_list>
 
 using namespace std;
 
@@ -101,9 +102,23 @@ class single_list {
 
 }
 
+template <typename TActual, typename TExpected>
+void assert_equal(const TActual& actual, const TExpected& expected) {
+	auto a = actual.begin();
+	for(auto i = expected.begin(); i != expected.end(); ++i) {
+		assert(a != actual.end());
+		assert(*i == *a);
+		++a;
+	}
+	assert(a == actual.end());
+}
 
 int main() {
 
+	for (int x : {-1, -2, -3}) // the rule for auto makes this ranged for work
+        	std::cout << x << ' ';
+	std::cout << '\n';
+    
 	gtlib::single_list<int> l;
 
 	for (auto it = l.begin(); it != l.end(); ++it ) {
@@ -113,6 +128,8 @@ int main() {
 	l.push_tail(1);
 	l.push_tail(2);
 	l.push_tail(5);
+
+	//assert_equal(l, {1, 2, 5});
 
 	for (auto it = l.begin(); it != l.end(); ++it ) {
 		cout << *it << endl;
