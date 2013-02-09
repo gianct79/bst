@@ -4,11 +4,8 @@
 
 #include <iostream>
 #include <stdexcept>
-#include <initializer_list>
 
 #include <cassert>
-
-#include <list>
 
 using namespace std;
 
@@ -60,7 +57,7 @@ class single_list {
 	single_list() : first_(nullptr), last_(nullptr) {
 	}
 
-	single_list(initializer_list<T> &list) {
+	single_list(initializer_list<T> list) {
 		for (auto it = list.begin(); it != list.end(); ++it) {
 			push_tail(*it);
 		}
@@ -126,10 +123,6 @@ void assert_equal(TActual& actual, TExpected& expected) {
 
 int main() {
 
-	for (int x : {-1, -2, -3}) // the rule for auto makes this ranged for work
-        	cout << x << ' ';
-	cout << endl;
-
 	gtlib::single_list<int> l;
 
 	for (auto it = l.begin(); it != l.end(); ++it ) {
@@ -144,13 +137,13 @@ int main() {
 	h.push_tail(1);
 	h.push_tail(2);
 	h.push_tail(5);
-	h.push_tail(6);
+	//h.push_tail(6);
 
-	list<int> s = {1, 2, 5};
+	assert_equal(l, h);
 
 	gtlib::single_list<int> j = {1, 2, 5};
 
-	//assert_equal(l, {1, 2, 5});
+	assert_equal(j, l);
 
 	for (auto it = l.begin(); it != l.end(); ++it ) {
 		cout << *it << endl;
