@@ -175,7 +175,8 @@ int main() {
 	tree.add_it(7, root);
 	print_binary_tree(cout, root);
 
-	tree.add_it(3, root);
+	tree.add(10, root);
+	print_binary_tree(cout, root);
 
 	cout << tree.search_it(2, root) << endl;
 	cout << tree.search(7, root) << endl;
