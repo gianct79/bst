@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+#include <stack>
+
 using namespace std;
 
 namespace gtlib {
@@ -27,23 +29,60 @@ public:
 	}
 
 	~binary_tree() {
-		destroy(root_);
+		destroy_it(root_);
 	}
 
-	Node *add(Node *parent, const T& v) {
+	Node *add(const T& v, Node *parent = nullptr) {
 
 		if (!parent) {
-            parent = new Node(v, nullptr, nullptr);
+			parent = new Node(v, nullptr, nullptr);
 			if (!root_) {
 				root_ = parent;
 			}			
 		} else if (v < parent->value) {
-			parent->left = add(parent->left, v);
+			parent->left = add(v, parent->left);
 		} else if (v > parent->value) {
-			parent->right = add(parent->right, v);
+			parent->right = add(v, parent->right);
 		}
 
 		return parent;
+	}
+
+	bool search(const T& v, Node *parent = nullptr) {
+		if (parent == nullptr) {
+			return false;
+		} else if (v < parent->value) {
+			return search(v, parent->left);
+		} else if (v > parent->value) {
+			return search(v, parent->right);
+		} else {
+			return true;
+		}
+	}
+
+	bool search_it(const T& v, Node *parent = nullptr) {
+
+		stack<Node*> tovisit;
+		tovisit.push(parent);
+
+		while (tovisit.size() > 0) {
+
+			const Node *curr = tovisit.top();
+			tovisit.pop();
+
+			if (curr) {
+
+				tovisit.push(curr->left);
+				tovisit.push(curr->right);
+
+				if (curr->value == v) {
+					return true;
+				}
+			}
+		
+		}
+
+		return false;
 	}
 
 	void destroy(Node *parent) {
@@ -54,6 +93,28 @@ public:
 			delete parent;
 		}
 	}
+
+	void destroy_it(Node *parent) {
+
+		stack<Node*> tovisit;
+		tovisit.push(parent);
+
+		while (tovisit.size() > 0) {
+
+			Node *curr = tovisit.top();
+			tovisit.pop();
+
+			if (curr) {
+			
+				tovisit.push(curr->left);
+				tovisit.push(curr->right);
+
+				delete curr;
+			}
+		
+		}
+
+	}
 };
 
 }
@@ -62,16 +123,21 @@ int main() {
 
 	gtlib::binary_tree<int> tree;
 
-	auto *root = tree.add(nullptr, 4);
+	auto *root = tree.add(4);
 
-	tree.add(root, 2);
-	tree.add(root, 1);
-	tree.add(root, 3);
-	tree.add(root, 6);
-	tree.add(root, 5);
-	tree.add(root, 7);
+	tree.add(2, root);
+	tree.add(1, root);
+	tree.add(3, root);
+	tree.add(6, root);
+	tree.add(5, root);
+	tree.add(7, root);
 
-	tree.add(root, 3);
+	tree.add(3, root);
+
+	cout << tree.search_it(2, root) << endl;
+	cout << tree.search(7, root) << endl;
+
+	cout << tree.search_it(10, root) << endl;
 
 	return 0;
 }
