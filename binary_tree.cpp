@@ -14,7 +14,7 @@ template <class T>
 class binary_tree {
 
 	struct Node {
-	    Node(const T &value, Node* left, Node* right) : value(value), left(left), right(right) {
+	    Node(const T &value, Node* left = nullptr, Node* right = nullptr) : value(value), left(left), right(right) {
 	    }
 
 	    const T value;
@@ -35,7 +35,7 @@ public:
 	Node *add(const T& v, Node *parent = nullptr) {
 
 		if (!parent) {
-			parent = new Node(v, nullptr, nullptr);
+			parent = new Node(v);
 			if (!root_) {
 				root_ = parent;
 			}			
@@ -46,6 +46,32 @@ public:
 		}
 
 		return parent;
+	}
+
+	Node *add_it(const T& v, Node *parent = nullptr) {
+
+		Node *tmp = parent;
+		Node *prev = nullptr;
+
+		while (tmp) {
+			prev = tmp;
+			if (v < tmp->value) {
+				tmp = tmp->left;
+			} else {
+				tmp = tmp->right;
+			}
+		}
+
+		tmp = new Node(v);
+
+		if (!root_) {
+			root_ = tmp;
+		} else if (v < prev->value) {
+			prev->left = tmp;
+		} else if (v > prev->value) {
+			prev->right = tmp;
+		}
+		return tmp;
 	}
 
 	bool search(const T& v, Node *parent = nullptr) {
@@ -119,20 +145,37 @@ public:
 
 }
 
+template <typename node_type, typename output_type>
+void print_binary_tree(output_type& out, node_type* n, size_t depth = 0, char connector = '+') {
+	if(!n) {
+		return;
+	}
+ 
+	print_binary_tree(out, n->right, depth + 1, '/');
+ 
+	for(int i = depth; i--; ) {
+		out << "    ";
+	}
+	out << ' ' << connector << "--" << n->value << endl;
+
+	print_binary_tree(out, n->left, depth + 1, '\\');
+}
+
 int main() {
 
 	gtlib::binary_tree<int> tree;
 
-	auto *root = tree.add(4);
+	auto *root = tree.add_it(4);
 
-	tree.add(2, root);
-	tree.add(1, root);
-	tree.add(3, root);
-	tree.add(6, root);
-	tree.add(5, root);
-	tree.add(7, root);
+	tree.add_it(2, root);
+	tree.add_it(1, root);
+	tree.add_it(3, root);
+	tree.add_it(6, root);
+	tree.add_it(5, root);
+	tree.add_it(7, root);
+	print_binary_tree(cout, root);
 
-	tree.add(3, root);
+	tree.add_it(3, root);
 
 	cout << tree.search_it(2, root) << endl;
 	cout << tree.search(7, root) << endl;
