@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include <stack>
+#include <queue>
 
 using namespace std;
 
@@ -137,9 +138,41 @@ public:
 
 				delete curr;
 			}
-		
+		}
+	}
+
+	size_t get_height(Node *parent = nullptr) {
+		if (!parent) {
+			return 0;
+		} else {
+			return 1 + max(get_height(parent->left), get_height(parent->right));
+		}
+	}
+
+	size_t get_height_it(Node *parent = nullptr) {
+
+		size_t height = 0;
+
+		queue<Node*> visited;
+		visited.push(parent);
+		visited.push(nullptr);
+
+		while (Node *f = visited.front()) {
+			visited.pop();
+			if (f->left) {
+				visited.push(f->left);
+		        } 
+		        if (f->right) {
+				visited.push(f->right);
+		        }
+			if (!visited.front()) {
+				visited.pop();
+				visited.push(nullptr);
+				height++;
+			}
 		}
 
+		return height;
 	}
 };
 
@@ -182,6 +215,8 @@ int main() {
 	cout << tree.search(7, root) << endl;
 
 	cout << tree.search_it(10, root) << endl;
+
+	cout << "root height: " << tree.get_height(root) << " - " << tree.get_height_it(root) << endl;
 
 	return 0;
 }
