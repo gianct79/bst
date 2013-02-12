@@ -4,68 +4,127 @@
 
 #include <iostream>
 
-#include <sstream>
-#include <iterator>
+#include <unordered_map>
+#include <unordered_set>
 
-#include <algorithm>
-#include <map>
+using namespace std;
 
-int stoi(const std::string &str) {
-    return atoi(str.c_str());
-}
+typedef int Bill;
+typedef unordered_map<Bill, int> Bills;
 
-int main(int argc, char* argv[]) {
+class Node {
+	Bills bills_;
 
-    int money;
-    std::cin >> money;
+public:
+	const Bills &getBills() const {
+		return bills_;
+	}
 
-    int sale;
-    std::cin >> sale;
+	void setBill(const Bill &bill) {
+		bills_[bill] = 0;
+	}
 
-    std::string str;
-    getline(std::cin, str);
+	void addBill(const Bill &bill) {
+		bills_[bill] += 1;
+	}
 
-    std::cout << std::endl;
+	Bill getReminder(const Bill &change) const {
+		Bill reminder = change;
+		for (auto it = bills_.begin(); it != bills_.end(); ++it) {
+			reminder -= it->first * it->second;
+		}
+		return reminder;
+	}
 
-    std::istringstream iss(str);
-    std::vector<std::string> tokens;
-    std::copy(
-        std::istream_iterator<std::string>(iss),
-        std::istream_iterator<std::string>(),
-        std::back_inserter<std::vector<std::string>>(tokens));
+	bool isFinal(const Bill &change) const {
+		return getReminder(change) == 0;
+	}
 
-    std::vector<int> bills(tokens.size());
-    std::transform(tokens.begin(), tokens.end(), bills.begin(), stoi);
+	bool operator ==(const Node &other) const {
+		return bills_ == other.bills_;
+	}
+};
 
-    std::sort(bills.begin(), bills.end(), [](int a, int b) {
-        return b < a;
-    });
+namespace std {
+template<>
+struct hash<Node> {
+public:
+    size_t operator()(const Node &node) const
+    {
+    	size_t h1 = 0;
 
-    int change = money - sale;
+		for (auto it = node.getBills().begin(); it != node.getBills().end(); ++it) {
+			h1 = h1 ^ (it->first << it->second);
+		}
 
-    std::map<int, size_t> billsQty;
-
-    if (change > 0) {
-
-        for (auto it = bills.begin(); it != bills.end(); ++it) {
-            billsQty[*it] = change / *it;
-            change = change % *it;
-        }
-
-        for (auto it = billsQty.begin(); it != billsQty.end(); ++it) {
-            if (it->second) {
-                std::cout << it->second << " " << it->first << std::endl;
-            }
-        }
-
-    } else {
-        std::cout << "\nno!";
+        return h1;
     }
-
-    return 0;
+};
 }
 
-//for(std::string expr; std::cin >> expr; ) {
-//    std::cout << expr << " = ";
-//    std::cout << eval(expr.c_str()) << std::endl;
-//}
+typedef unordered_set<Node> Solutions;
+
+void generateSolutions(const Bill &change, const Node &node, Solutions &solutions) {
+
+	if (node.isFinal(change)) {
+		solutions.insert(node);
+	} else if (node.getReminder(change) > 0) {
+
+		for (auto it = node.getBills().begin(); it != node.getBills().end(); ++it) {
+
+			Bill bill = it->first;
+
+			Node possible(node);
+			possible.addBill(bill);
+
+			generateSolutions(change, possible, solutions);
+		}
+
+	} else {
+		// mark impossible solution?
+	}
+
+}
+
+int main() {
+
+	Bill money;
+	cin >> money;
+
+	Bill sale;
+	cin >> sale;
+
+	Node initial;
+
+	Bill n;
+	while (cin >> n) {
+		initial.setBill(n);
+	}
+
+	cout << "Money : " << money << endl;
+	cout << "Sale  : " << sale << endl;
+
+	Bill change = money - sale;
+
+	cout << "Change: " << change << endl;
+
+	if (change > 0) {
+		Solutions solutions;
+		generateSolutions(change, initial, solutions);
+
+		for (Node solution : solutions) {
+			for (auto it = solution.getBills().begin(); it != solution.getBills().end(); ++it) {
+				cout << "[" << it->first << "]: " << it->second << ", ";
+			}
+			cout << endl;
+		}
+
+	} else if (change == 0) {
+		cout << "cool!" << endl;
+	} else {
+		cout << "what?" << endl;
+	}
+
+	return 0;
+}
+
