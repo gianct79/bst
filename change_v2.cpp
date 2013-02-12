@@ -8,8 +8,7 @@
 
 int main(int argc, char* argv[]) {
 
-    std::array<int, 4> bills; bills[0] = 100; bills[1] = 50; bills[2] = 10; bills[3] = 1;
-
+    std::array<int, 4> bills = {100, 50, 10, 1, };
     int sale, money;
 
     std::cout << "sale value. : ";
@@ -30,14 +29,17 @@ int main(int argc, char* argv[]) {
             change = change % *it;
         }
 
-        std::cout << "\nqty of bills: ";
+        std::cout << "qty of bills: ";
 
         for (auto it = billsQty.begin(); it != billsQty.end(); ++it)
             std::cout << it->first << " => " << it->second << ' ';
 
+    } else if (change == 0) {
+        std::cout << "cool!";
     } else {
-        std::cout << "\nno!";
+        std::cout << "what?";
     }
+    std::cout << std::endl;
 
     return 0;
 }
