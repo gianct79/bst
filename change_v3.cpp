@@ -62,13 +62,42 @@ public:
 };
 }
 
+class Progress {
+	char curr_ = '\\';
+
+public:
+	void step() {
+		switch (curr_) {
+		case '\\':
+			curr_ = '|';
+			break;
+		case '|':
+			curr_ = '/';
+			break;
+		case '/':
+			curr_ = '-';
+			break;
+		case '-':
+			curr_ = '\\';
+			break;
+		}
+		cout << curr_ << char(8);
+	}
+
+};
+
 typedef unordered_set<Node> Solutions;
 
-void generateSolutions(const Bill &change, const Node &node, Solutions &solutions) {
+Progress indicator;
+
+void generateSolutions(const Bill &change, const Node &node, Solutions &solutions, Solutions &nhacas) {
+
+	indicator.step();
 
 	if (node.isFinal(change)) {
 		solutions.insert(node);
-	} else if (node.getReminder(change) > 0) {
+	} else if (nhacas.find(node) == nhacas.end()
+		&& node.getReminder(change) > 0) {
 
 		for (auto it = node.getBills().begin(); it != node.getBills().end(); ++it) {
 
@@ -77,11 +106,10 @@ void generateSolutions(const Bill &change, const Node &node, Solutions &solution
 			Node possible(node);
 			possible.addBill(bill);
 
-			generateSolutions(change, possible, solutions);
+			generateSolutions(change, possible, solutions, nhacas);
 		}
-
 	} else {
-		// mark impossible solution?
+		nhacas.insert(node); // mark impossible solution
 	}
 
 }
@@ -109,8 +137,8 @@ int main() {
 	cout << "Change: " << change << endl;
 
 	if (change > 0) {
-		Solutions solutions;
-		generateSolutions(change, initial, solutions);
+		Solutions solutions, nhacas;
+		generateSolutions(change, initial, solutions, nhacas);
 
 		for (Node solution : solutions) {
 			for (auto it = solution.getBills().begin(); it != solution.getBills().end(); ++it) {
@@ -127,4 +155,3 @@ int main() {
 
 	return 0;
 }
-
