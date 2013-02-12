@@ -90,14 +90,13 @@ typedef unordered_set<Node> Solutions;
 
 Progress indicator;
 
-void generateSolutions(const Bill &change, const Node &node, Solutions &solutions, Solutions &nhacas) {
+void generateSolutions(const Bill &change, const Node &node, Solutions &solutions) {
 
 	indicator.step();
 
 	if (node.isFinal(change)) {
 		solutions.insert(node);
-	} else if (nhacas.find(node) == nhacas.end()
-		&& node.getReminder(change) > 0) {
+	} else if (node.getReminder(change) > 0) {
 
 		for (auto it = node.getBills().begin(); it != node.getBills().end(); ++it) {
 
@@ -106,12 +105,9 @@ void generateSolutions(const Bill &change, const Node &node, Solutions &solution
 			Node possible(node);
 			possible.addBill(bill);
 
-			generateSolutions(change, possible, solutions, nhacas);
+			generateSolutions(change, possible, solutions);
 		}
-	} else {
-		nhacas.insert(node); // mark impossible solution
 	}
-
 }
 
 int main() {
@@ -137,8 +133,8 @@ int main() {
 	cout << "Change: " << change << endl;
 
 	if (change > 0) {
-		Solutions solutions, nhacas;
-		generateSolutions(change, initial, solutions, nhacas);
+		Solutions solutions;
+		generateSolutions(change, initial, solutions);
 
 		for (Node solution : solutions) {
 			for (auto it = solution.getBills().begin(); it != solution.getBills().end(); ++it) {
