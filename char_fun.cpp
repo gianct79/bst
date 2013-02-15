@@ -3,9 +3,10 @@
  */
 
 #include <iostream>
-
 #include <stack>
+
 #include <ctype.h>
+#include <string.h>
 
 using namespace std;
 
@@ -44,7 +45,16 @@ size_t countChars(const string &src, const char c) {
 
 char *removeChars(char *src, const char c) {
 	char *s = src;
+	char *w = src;
+	for (char *r = src; r && *r; r++) {
+		if (c == *r)
+			continue;
+		*w = *r; w++;
+	}
 
+	if (w) {
+		*w = '\0';
+	}
 
 	return s;
 }
@@ -57,8 +67,26 @@ int main() {
 	cout << countChars("ab*cde**fgh***", '*') << endl;
 	cout << countChars("", ' ') << endl;
 
-	cout << removeChars("ab*cde**fgh***", '*') << endl;
-	cout << removeChars("", ' ') << endl;
+	char *stuff = new char[9];
+
+	strcpy(stuff, "ab*de*gh");
+	cout << removeChars(stuff, '*') << endl;
+
+	strcpy(stuff, "********");
+	cout << removeChars(stuff, '*') << endl;
+
+	strcpy(stuff, "abc efg ");
+	cout << removeChars(stuff, ' ') << endl;
+
+	strcpy(stuff, "");
+	cout << removeChars(stuff, ' ') << endl;
+
+	delete [] stuff;
+
+	cout << removeChars(nullptr, '*') << endl;
+
+	char *stuffa = "ab*de*gh";
+	cout << removeChars(stuffa, '*') << endl; // pow! why?
 
 	return 0;
 }
