@@ -5,7 +5,6 @@
 #include <iostream>
 
 #include <unordered_map>
-#include <unordered_set>
 
 using namespace std;
 
@@ -74,14 +73,12 @@ public:
 
 };
 
-typedef unordered_set<Node> Solutions;
-
 Progress indicator;
 
 void generateSolutions(const Note &change, const Node &node, Node &solution) {
 
 	if (solution.countNotes() > 0 && node.countNotes() > solution.countNotes()) {
-        // suggestion from diegodie: only accept solutions that could generate fewer notes
+        // Suggestion from diegodie: only accept solutions that could generate fewer notes
 		return;
 	}
 
