@@ -1,6 +1,6 @@
 ﻿/*
- * Copyleft Giancarlo Tomazelli. All rights reversed.
- */
+* Copyleft 1979-2013 Giancarlo Tomazelli. All rights reversed.
+*/
 
 using System;
 using System.Text;
