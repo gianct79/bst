@@ -1,6 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿/*
+ * Copyleft Giancarlo Tomazelli. All rights reversed.
+ */
+
+using System;
 using System.Text;
 
 namespace fillMatrix
