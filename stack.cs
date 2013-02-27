@@ -1,13 +1,13 @@
 /*
-* Copyleft 1979-2013 Giancarlo Tomazelli. All rights reversed.
-*/
+ * Copyleft 1979-2013 Giancarlo Tomazelli. All rights reversed.
+ */
 
 using System;
 using System.Text;
 
 namespace gtlib
 {
-    class Stack<T>
+    public class Stack<T>
     {
         class Node
         {
@@ -31,7 +31,7 @@ namespace gtlib
         public T Pop()
         {
             if (top == null)
-                throw new Exception("underflow");
+                throw new Exception("The stack is empty.");
 
             T value = top.value;
             top = top.prev;
@@ -39,7 +39,7 @@ namespace gtlib
             return value;
         }
 
-        public bool IsEmpty()
+        public bool Empty()
         {
             return (top == null);
         }
@@ -48,9 +48,7 @@ namespace gtlib
         {
             StringBuilder sb = new StringBuilder();
             for (Node it = top; it != null; it = it.prev)
-            {
                 sb.AppendFormat("{0} ", it.value);
-            }
             return sb.ToString();
         }
     }
