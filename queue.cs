@@ -98,7 +98,7 @@ namespace gtlib
             StringBuilder sb = new StringBuilder();
             for (var it = first; it != null; it = it.next)
                 sb.AppendFormat("{0} ", it.value);
-            return sb.ToString(0, sb.Length - 1);
+            return sb.ToString();
         }
 
         public IEnumerator GetEnumerator()
