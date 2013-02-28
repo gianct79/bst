@@ -60,7 +60,7 @@ namespace gtlib
 
         Node head, tail;
 
-        public Node Push(T value)
+        public Node Add(T value)
         {
             Node n = new Node
             {
@@ -115,15 +115,15 @@ namespace gtlib
         }
     }
 
-    class HashSet<T> : IEnumerable
+    class UnorderedSet<T> : IEnumerable
     {
-        Dictionary<T, Deque<T>.Node> slots = new Dictionary<T,Deque<T>.Node>();
+        Dictionary<T, Deque<T>.Node> slots = new Dictionary<T, Deque<T>.Node>();
         Deque<T> values = new Deque<T>();
 
         public void Insert(T value)
         {
             if (!slots.ContainsKey(value))
-                slots.Add(value, values.Push(value));
+                slots.Add(value, values.Add(value));
         }
 
         public void Remove(T value)
@@ -151,7 +151,7 @@ namespace gtlib
     {
         public static void Main()
         {
-            HashSet<int> set = new HashSet<int>();
+            UnorderedSet<int> set = new UnorderedSet<int>();
 
             set.Insert(1);
             set.Insert(3);
@@ -164,8 +164,8 @@ namespace gtlib
             Console.WriteLine(set);
 
             set.Insert(2);
-			set.Insert(4);
-			set.Insert(8);
+            set.Insert(4);
+            set.Insert(8);
             set.Remove(3);
             Console.WriteLine(set);
 
