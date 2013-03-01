@@ -73,7 +73,8 @@ namespace runner
             int request = 0;
             while (request++ < 50)
             {
-                Console.WriteLine(throttle.Serve(DateTime.Now.Ticks));
+                DateTime time = DateTime.Now;
+                Console.WriteLine(string.Format("{0}: {1}", time.ToLongTimeString(), throttle.Serve(time.Ticks)));
                 Thread.Sleep(rand.Next(500));
             }
         }

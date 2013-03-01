@@ -36,12 +36,13 @@ namespace runner
         static void Main(string[] args)
         {
             Random rand = new Random();
-            Throttle throttle = new Throttle(5);
+            Throttle throttle = new Throttle(3);
 
             int request = 0;
             while (request++ < 50)
             {
-                Console.WriteLine(throttle.Serve(DateTime.Now.Ticks));
+                DateTime time = DateTime.Now;
+                Console.WriteLine(string.Format("{0}: {1}", time.ToLongTimeString(), throttle.Serve(time.Ticks)));
                 Thread.Sleep(rand.Next(500));
             }
         }
