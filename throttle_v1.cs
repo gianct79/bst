@@ -18,10 +18,10 @@ namespace runner
 
         public bool Serve(long ticks)
         {
-            int epoch = (int)((ticks - 621355968000000000) / 10000000);
+            int epoch = (int)((ticks - 621355968000000000) / 10000);
             for (int t = 0; t < slots.Length; t++)
             {
-                if ((epoch - slots[t]) > 1)
+                if ((epoch - slots[t]) > 1000)
                 {
                     slots[t] = epoch;
                     return true;
@@ -42,7 +42,7 @@ namespace runner
             while (request++ < 50)
             {
                 DateTime time = DateTime.Now;
-                Console.WriteLine(string.Format("{0}: {1}", time.ToLongTimeString(), throttle.Serve(time.Ticks)));
+                Console.WriteLine(string.Format("{0}: {1}", time.ToString("hh:mm:ss.FFF"), throttle.Serve(time.Ticks)));
                 Thread.Sleep(rand.Next(500));
             }
         }
