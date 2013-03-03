@@ -21,13 +21,14 @@ namespace gtlib
 
         private Node Search(T value, Node node)
         {
-            Comparer<T> cmp = Comparer<T>.Default;
-            if (node == null)
-                return null;
-            if (cmp.Compare(value, node.value) < 0)
-                return Search(value, node.left);
-            else if (cmp.Compare(value, node.value) > 0)
-                return Search(value, node.right);
+            if (node != null)
+            {
+                Comparer<T> cmp = Comparer<T>.Default;
+                if (cmp.Compare(value, node.value) < 0)
+                    return Search(value, node.left);
+                else if (cmp.Compare(value, node.value) > 0)
+                    return Search(value, node.right);
+            }
             return node;
         }
 
@@ -67,9 +68,9 @@ namespace gtlib
 
         private Node Remove(T value, Node node)
         {
-            Comparer<T> cmp = Comparer<T>.Default;
             if (node != null)
             {
+                Comparer<T> cmp = Comparer<T>.Default;
                 if (cmp.Compare(value, node.value) < 0)
                     node.left = Remove(value, node.left);
                 else if (cmp.Compare(value, node.value) > 0)
