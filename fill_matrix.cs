@@ -37,12 +37,10 @@ namespace fillMatrix
                 int x = rand.Next(GetX());
                 int y = rand.Next(GetY());
 
-                while (values[x, y])
-                {
-                    x = rand.Next(GetX());
-                    y = rand.Next(GetY());
-                }
-                values[x, y] = true;
+				if (values[x, y])
+					continue;
+
+				values[x, y] = true;
                 n--;
             }
         }
