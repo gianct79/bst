@@ -33,6 +33,27 @@ string reverse(const string &src) {
 	return temp;
 }
 
+int countWords(const string &src) {
+
+    int count = 0;
+    string temp;
+    
+    for (auto it = src.begin(); it != src.end(); ++it) {
+        if (isspace(*it)) {
+            if (temp.length() > 0) {
+                count++;
+                temp.erase();
+            }
+        } else {
+            temp += *it;
+        }
+    }
+    if (temp.length() > 0) {
+        count++;
+    
+    return count;
+}
+
 size_t countChars(const string &src, const char c) {
 	size_t cnt = 0;
 	for (auto it = src.begin(); it != src.end(); ++it) {
