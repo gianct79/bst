@@ -34,13 +34,13 @@ string reverse(const string &src) {
 
 size_t countWords(const string &src) {
 
-    size_t count = 0;
+    size_t cnt = 0;
     string temp;
     
     for (auto it = src.begin(); it != src.end(); ++it) {
         if (isspace(*it)) {
             if (temp.length() > 0) {
-                count++;
+                cnt++;
                 temp.erase();
             }
         } else {
@@ -48,10 +48,31 @@ size_t countWords(const string &src) {
         }
     }
     if (temp.length() > 0) {
-        count++;
+        cnt++;
     }
     
-    return count;
+    return cnt;
+}
+
+size_t countWords(char *src) {
+
+    size_t cnt = 0;
+    char *s = src;
+    char *r = src;
+
+    for (; r && *r; r++) {
+        if (isspace(*r)) {
+            if (s < r) {
+                cnt++;
+            }
+            s = r + 1;
+        }
+    }
+    if (s < r) {
+        cnt++;
+    }
+
+    return cnt;
 }
 
 size_t countChars(const string &src, const char c) {
@@ -82,13 +103,17 @@ char *removeChars(char *src, const char c) {
 
 int main() {
 
-    cout << reverse("the quick brown fox jumps over the lazy dog!") << endl;
+    string test("the quick brown fox jumps over the lazy dog!");
+
+    cout << reverse(test) << endl;
     cout << reverse("") << endl;
 
     cout << countChars("ab*cde**fgh***", '*') << endl;
     cout << countChars("", ' ') << endl;
 
-    cout << countWords("the quick brown fox jumps over the lazy dog!") << endl;
+    cout << countWords(test) << endl;
+
+    cout << countWords("the quick brown fox jumps over the lazy dog") << endl;
     cout << countWords("") << endl;
     cout << countWords("  ") << endl;
     cout << countWords(" a") << endl;
