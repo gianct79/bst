@@ -12,30 +12,29 @@ using namespace std;
 
 string reverse(const string &src) {
 
-	stack<string> heap;
+    stack<string> heap;
 
-	string temp;
-	for (auto it = src.begin(); it != src.end(); ++it) {
-		temp += *it;
-		if (isspace(*it)) {
-			heap.push(temp);
-			temp.erase();
-		}
+    string temp;
+    for (auto it = src.begin(); it != src.end(); ++it) {
+	temp += *it;
+	if (isspace(*it)) {
+	    heap.push(temp);
+	    temp.erase();
 	}
-	heap.push(temp);
+    }
+    heap.push(temp);
 
-	temp.erase();
-	while (!heap.empty()) {
-		temp += heap.top();
-		heap.pop();
-	}
-
-	return temp;
+    temp.erase();
+    while (!heap.empty()) {
+	temp += heap.top();
+	heap.pop();
+    }
+    return temp;
 }
 
-int countWords(const string &src) {
+size_t countWords(const string &src) {
 
-    int count = 0;
+    size_t count = 0;
     string temp;
     
     for (auto it = src.begin(); it != src.end(); ++it) {
@@ -50,64 +49,70 @@ int countWords(const string &src) {
     }
     if (temp.length() > 0) {
         count++;
+    }
     
     return count;
 }
 
 size_t countChars(const string &src, const char c) {
-	size_t cnt = 0;
-	for (auto it = src.begin(); it != src.end(); ++it) {
-		if (c == *it) {
-			cnt++;
-		}
+    size_t cnt = 0;
+    for (auto it = src.begin(); it != src.end(); ++it) {
+	if (c == *it) {
+	    cnt++;
 	}
-	return cnt;
+    }
+    return cnt;
 }
 
 char *removeChars(char *src, const char c) {
-	char *s = src;
-	char *w = src;
-	for (char *r = src; r && *r; r++) {
-		if (c == *r)
-			continue;
-		*w = *r; w++;
-	}
+    char *s = src;
+    char *w = src;
+    for (char *r = src; r && *r; r++) {
+	if (c == *r)
+	continue;
+	*w = *r; w++;
+    }
 
-	if (w) {
-		*w = '\0';
-	}
+    if (w) {
+	*w = '\0';
+    }
 
-	return s;
+    return s;
 }
 
 int main() {
 
-	cout << reverse("the quick brown fox jumps over the lazy dog!") << endl;
-	cout << reverse("") << endl;
+    cout << reverse("the quick brown fox jumps over the lazy dog!") << endl;
+    cout << reverse("") << endl;
 
-	cout << countChars("ab*cde**fgh***", '*') << endl;
-	cout << countChars("", ' ') << endl;
+    cout << countChars("ab*cde**fgh***", '*') << endl;
+    cout << countChars("", ' ') << endl;
 
-	char *stuff = new char[9];
+    cout << countWords("the quick brown fox jumps over the lazy dog!") << endl;
+    cout << countWords("") << endl;
+    cout << countWords("  ") << endl;
+    cout << countWords(" a") << endl;
 
-	strcpy(stuff, "ab*de*gh");
-	cout << removeChars(stuff, '*') << endl;
+    char *stuff = new char[9];
 
-	strcpy(stuff, "********");
-	cout << removeChars(stuff, '*') << endl;
+    strcpy(stuff, "ab*de*gh");
+    cout << removeChars(stuff, '*') << endl;
 
-	strcpy(stuff, "abc efg ");
-	cout << removeChars(stuff, ' ') << endl;
+    strcpy(stuff, "********");
+    cout << removeChars(stuff, '*') << endl;
 
-	strcpy(stuff, "");
-	cout << removeChars(stuff, ' ') << endl;
+    strcpy(stuff, "abc efg ");
+    cout << removeChars(stuff, ' ') << endl;
 
-	delete [] stuff;
+    strcpy(stuff, "");
+    cout << removeChars(stuff, ' ') << endl;
 
-	cout << removeChars(nullptr, '*') << endl;
+    delete [] stuff;
 
-	char *stuffa = "ab*de*gh";
-	cout << removeChars(stuffa, '*') << endl; // pow! why?
+    cout << removeChars(nullptr, '*') << endl;
 
-	return 0;
+    //char *stuffa = "ab*de*gh";
+    //cout << removeChars(stuffa, '*') << endl; // pow!
+
+    return 0;
 }
