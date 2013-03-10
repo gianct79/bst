@@ -18,6 +18,28 @@ namespace gtlib
             return new string(array);
         }
 
+        public static int CountWords(this string str)
+        {
+            int cnt = 0;
+
+            int s = 0;
+            int r = 0;
+
+            for (; r < str.Length; r++)
+            {
+                if (Char.IsWhiteSpace(str, r))
+                {
+                    if (s < r)
+                        cnt++;
+                    s = r + 1;
+                }
+            }
+            if (s < r)
+                cnt++;
+
+            return cnt;        
+        }
+
         public static string Swap(this string str, int a, int b)
         {
             char[] array = str.ToCharArray();
@@ -107,6 +129,11 @@ namespace gtlib
         {
             string menon = "menon";
             Console.WriteLine(string.Format("{0} rules", menon));
+
+            Console.WriteLine("the quick brown fox jumps over the lazy dog!".CountWords());
+            Console.WriteLine(string.Empty.CountWords());
+            Console.WriteLine("  ".CountWords());
+            Console.WriteLine(" a".CountWords());
 
             StringFun stringFun = new StringFun();
             stringFun.Load();
