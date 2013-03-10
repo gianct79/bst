@@ -20,14 +20,15 @@ namespace gtlib
 
         public static int CountWords(this string str)
         {
-            int cnt = 0;
+            char[] array = str.ToCharArray();
 
+            int cnt = 0;
             int s = 0;
             int r = 0;
 
-            for (; r < str.Length; r++)
+            for (; r < array.Length; r++)
             {
-                if (Char.IsWhiteSpace(str, r))
+                if (Char.IsWhiteSpace(array[r]))
                 {
                     if (s < r)
                         cnt++;
