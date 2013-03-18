@@ -5,7 +5,7 @@
 using System;
 using System.Threading;
 
-namespace runner
+namespace gtlib
 {
     class Throttle
     {

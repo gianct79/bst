@@ -5,7 +5,7 @@
 using System;
 using System.Text;
 
-namespace fillMatrix
+namespace gtlib
 {
     class Matrix
     {

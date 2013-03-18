@@ -5,7 +5,7 @@
 using System;
 using System.Text;
 
-namespace runner
+namespace gtlib
 {
     class Queue<T>
     {
