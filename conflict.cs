@@ -57,7 +57,6 @@ namespace gtlib
             appointments.Remove(item);
         }
 
-
         public int CountConflicts()
         {
             int count = 0;
