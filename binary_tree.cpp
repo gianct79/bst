@@ -1,6 +1,6 @@
 /*
- * Copyleft 1979-2013 Giancarlo Tomazelli. All rights reversed.
- */
+* Copyleft 1979-2013 GTO Inc. All rights reversed.
+*/
 
 #include <iostream>
 
