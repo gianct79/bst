@@ -1,5 +1,5 @@
 /*
-* Copyleft 1979-2013 Giancarlo Tomazelli. All rights reversed.
+* Copyleft 1979-2013 GTO Inc. All rights reversed.
 */
 
 using System;
@@ -98,8 +98,7 @@ namespace gtlib
         {
             Skyline sk;
 
-            if (B.Length == 0)
-                // die
+            if (B.Length == 0) // die
                 sk = new Skyline();
             else if (lo == hi)
             {
@@ -113,7 +112,7 @@ namespace gtlib
                 int mid = (lo + hi) / 2;
                 Skyline sk1 = Create(B, lo, mid);
                 Skyline sk2 = Create(B, mid + 1, hi);
-                // merge the two buildings to create a "buildzao"
+                // merge the two buildings to create a bigger building
                 sk = Merge(sk1, sk2);
             }
 

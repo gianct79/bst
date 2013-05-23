@@ -1,7 +1,5 @@
 /*
-* Copyleft 1979-2013 Giancarlo Tomazelli. All rights reversed.
-*
-* Copied from Chicao.
+* Copied from XCAO.
 */
 
 #include <iostream>

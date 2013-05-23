@@ -1,6 +1,6 @@
 /*
- * Copyleft 1979-2013 Giancarlo Tomazelli. All rights reversed.
- */
+* Copyleft 1979-2013 GTO Inc. All rights reversed.
+*/
 
 #include <iostream>
 #include <stack>
@@ -16,18 +16,18 @@ string reverse(const string &src) {
 
     string temp;
     for (auto it = src.begin(); it != src.end(); ++it) {
-	temp += *it;
-	if (isspace(*it)) {
-	    heap.push(temp);
-	    temp.erase();
-	}
+        temp += *it;
+        if (isspace(*it)) {
+            heap.push(temp);
+            temp.erase();
+        }
     }
     heap.push(temp);
 
     temp.erase();
     while (!heap.empty()) {
-	temp += heap.top();
-	heap.pop();
+        temp += heap.top();
+        heap.pop();
     }
     return temp;
 }
@@ -78,9 +78,9 @@ size_t countWords(char *src) {
 size_t countChars(const string &src, const char c) {
     size_t cnt = 0;
     for (auto it = src.begin(); it != src.end(); ++it) {
-	if (c == *it) {
-	    cnt++;
-	}
+        if (c == *it) {
+            cnt++;
+        }
     }
     return cnt;
 }
@@ -89,13 +89,13 @@ char *removeChars(char *src, const char c) {
     char *s = src;
     char *w = src;
     for (char *r = src; r && *r; r++) {
-	if (c == *r)
-	continue;
-	*w = *r; w++;
+        if (c == *r)
+        continue;
+        *w = *r; w++;
     }
 
     if (w) {
-	*w = '\0';
+    *w = '\0';
     }
 
     return s;
