@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 
+#include <iterator>
 #include <vector>
 
 using namespace std;
@@ -60,13 +61,16 @@ vector<T> merge_sort<T>::aux;
 
 int main(int argc, char **argv) {
 
-    ifstream ifs(argv[1], fstream::in);
+    istream_iterator<int> eos;
 
     vector<int> list;
 
-    int x;
-    while (ifs >> x) {
-        list.push_back(x);
+    ifstream input(argv[1], istream::in);
+    if (input) {
+    	copy(istream_iterator<int>(input), eos, back_inserter(list));
+    } else {
+    	cout << "type int values, one per line...\n";
+    	copy(istream_iterator<int>(cin), eos, back_inserter(list));
     }
 
     merge_sort<int>::sort(list);
