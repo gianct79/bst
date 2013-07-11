@@ -13,52 +13,60 @@
 using namespace std;
 
 template <class T>
-void countSplitInv(vector<T> &a, vector<T> &aux, size_t lo, size_t mid, size_t hi, size_t &count) {
+size_t countSplitInv(vector<T> &a, const vector<T> &b, const vector<T> &c, size_t length) {
 
-    size_t i = lo;
-    size_t j = mid + 1;
+    size_t cnt = 0;
 
-    for (size_t k = lo; k <= hi; k++)
-        aux[k] = a[k];
+    size_t i = 0;
+    size_t j = 0;
 
-    for (size_t k = lo; k <= hi; k++) {
-        if (i > mid)
-            a[k] = aux[j++];
-        else if (j > hi)
-            a[k] = aux[i++];
-        else if (aux[j] < aux[i]) {
-            a[k] = aux[j++];
-            count += (hi - lo - k);
-        } else {
-            a[k] = aux[i++];
+    for (size_t k = 0; k < length; k++) {
+
+        if (i >= b.size()) {
+            a[k] = c[j++];
+        } else if (j >= c.size()) {
+            a[k] = b[i++];
+        } else if (b[i] < c[j]) {
+            a[k] = b[i++];
+        } else if (c[j] < b[i]) {
+            a[k] = c[j++];
+            cnt += b.size() - i;
         }
     }
+
+    return cnt;
 }
 
 template <class T>
-void sortAndCount(vector<T> &a, vector<T> &aux, size_t lo, size_t hi, size_t &count) {
+size_t sortAndCount(vector<T> &a) {
 
-    if (hi <= lo)
-        return;
+    size_t length = a.size();
 
-    size_t mid = lo + (hi - lo) / 2;
-    sortAndCount(a, aux, lo, mid, count);
-    sortAndCount(a, aux, mid + 1, hi, count);
+    if (length <= 1)
+        return 0;
 
-    countSplitInv(a, aux, lo, mid, hi, count);
-}
+    size_t mid = length / 2;
 
-template <class T>
-void sortAndCount(vector<T> &a, size_t &count) {
+    vector<T> b(mid);
+    for (size_t k = 0; k < mid; k++)
+        b[k] = a[k];
 
-    vector<T> aux(a.size());
-    sortAndCount(a, aux, 0, a.size() - 1, count);
+    vector<T> c(length - mid);
+    for (size_t k = 0; k < (length - mid); k++)
+        c[k] = a[mid + k];
+
+    size_t x = sortAndCount(b);
+    size_t y = sortAndCount(c);
+
+    size_t z = countSplitInv(a, b, c, a.size());
+
+    return x + y + z;
 }
 
 int main(int argc, char **argv) {
 
-    istream_iterator<int> eos;
     vector<int> list;
+    istream_iterator<int> eos;
 
     if (argc > 1) {
         ifstream input(argv[1], istream::in);
@@ -72,9 +80,7 @@ int main(int argc, char **argv) {
     	copy(istream_iterator<int>(cin), eos, back_inserter(list));
     }
 
-    size_t cnt = 0;
-    sortAndCount(list, cnt);
-
+    size_t cnt = sortAndCount(list);
     cout << cnt << '\n';
 
     for (auto i : list) {
