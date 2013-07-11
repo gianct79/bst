@@ -13,14 +13,14 @@
 using namespace std;
 
 template <class T>
-size_t countSplitInv(vector<T> &a, const vector<T> &b, const vector<T> &c, size_t length) {
+size_t countSplitInv(vector<T> &a, const vector<T> &b, const vector<T> &c) {
 
     size_t cnt = 0;
 
     size_t i = 0;
     size_t j = 0;
 
-    for (size_t k = 0; k < length; k++) {
+    for (size_t k = 0; k < a.size(); k++) {
 
         if (i >= b.size()) {
             a[k] = c[j++];
@@ -48,17 +48,17 @@ size_t sortAndCount(vector<T> &a) {
     size_t mid = length / 2;
 
     vector<T> b(mid);
-    for (size_t k = 0; k < mid; k++)
+    for (size_t k = 0; k < b.size(); k++)
         b[k] = a[k];
 
     vector<T> c(length - mid);
-    for (size_t k = 0; k < (length - mid); k++)
+    for (size_t k = 0; k < c.size(); k++)
         c[k] = a[mid + k];
 
     size_t x = sortAndCount(b);
     size_t y = sortAndCount(c);
 
-    size_t z = countSplitInv(a, b, c, a.size());
+    size_t z = countSplitInv(a, b, c);
 
     return x + y + z;
 }
@@ -82,10 +82,6 @@ int main(int argc, char **argv) {
 
     size_t cnt = sortAndCount(list);
     cout << cnt << '\n';
-
-    for (auto i : list) {
-        cout << i << '\n';
-    }
 
     return 0;
 }
