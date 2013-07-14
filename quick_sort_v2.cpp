@@ -24,14 +24,14 @@ class quick_sort {
         if (v[l] < v[m]) {
             if (v[m] < v[r])
                 return m;
-            else if (v[r] < v[m])
+            else if (v[r] < v[m] && v[r] > v[l])
                 return r;
             else
                 return l;
         } else {
             if (v[m] > v[r])
                 return m;
-            else if (v[r] > v[m])
+            else if (v[r] > v[m] && v[r] < v[l])
                 return r;
             else
                 return l;
