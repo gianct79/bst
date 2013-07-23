@@ -65,16 +65,12 @@ public:
 
     karger_graph& merge_vertices(const size_t &v, const size_t &u) {
 
-        matrix::const_iterator it_v = _data.find(v);
-        matrix::const_iterator it_u = _data.find(u);
-
-        if (it_v != _data.end() &&  it_u != _data.end()) {
-
-            _data[v].merge(_data[u]);
-            _data[v].remove(u);
-
-            _data.erase(it_u);
+        for (matrix_row::const_iterator it = _data[u].begin(); it != _data[u].end(); ++it) {
+            _data[v].push_back(*it);
         }
+
+        _data[v].remove(u);
+        _data.erase(u);
 
         return *this;
     }
