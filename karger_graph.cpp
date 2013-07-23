@@ -7,8 +7,8 @@
 #include <sstream>
 
 #include <list>
+#include <vector>
 #include <map>
-#include <algorithm>
 
 #include <time.h>
 #include <math.h>
@@ -28,6 +28,17 @@ public:
         return _data.size();
     }
 
+    vector<matrix_row::value_type> get_vertices() const {
+
+        vector<size_t> vertices;
+
+        for (matrix::const_iterator it = _data.begin(); it != _data.end(); ++it) {
+            vertices.push_back(it->first);
+        }
+
+        return vertices;
+    }
+
     size_t count_vertices() const {
         return _data.size();
     }
@@ -37,7 +48,7 @@ public:
         size_t n = 0;
 
         for (matrix::const_iterator it = _data.begin(); it != _data.end(); ++it) {
-            n += it->second.size() - 1;
+            n += it->second.size();
         }
 
         return n;
@@ -46,8 +57,7 @@ public:
     karger_graph& remove_self_loops() {
 
         for (matrix::iterator it = _data.begin(); it != _data.end(); ++it) {
-            it->second.sort();
-            it->second.unique();
+            it->second.remove(it->first);
         }
 
         return *this;
@@ -55,9 +65,15 @@ public:
 
     karger_graph& merge_vertices(const size_t &v, const size_t &u) {
 
-        if (_data.find(v) != _data.end() && _data.find(u) != _data.end()) {
+        matrix::const_iterator it_v = _data.find(v);
+        matrix::const_iterator it_u = _data.find(u);
+
+        if (it_v != _data.end() &&  it_u != _data.end()) {
+
             _data[v].merge(_data[u]);
-            _data.erase(u);
+            _data[v].remove(u);
+
+            _data.erase(it_u);
         }
 
         return *this;
@@ -69,10 +85,12 @@ public:
 
         while (km.count_vertices() > 2) {
 
+            vector<size_t> vertices = km.get_vertices();
+
             size_t v, u;
             do {
-                v = (rand() % km.get_size());
-                u = (rand() % km.get_size());
+                v = vertices[rand() % vertices.size()];
+                u = vertices[rand() % vertices.size()];
             } while (v == u);
 
             km.merge_vertices(v, u);
@@ -85,15 +103,18 @@ public:
         string line;
         while (getline(is, line)) {
 
-            matrix_row vertices;
+            karger_graph::matrix_row vertices;
             stringstream linestream(line);
 
-            short v;
+            size_t v;
             while (linestream >> v) {
                 vertices.push_back(v);
             }
 
-            km._data[vertices.front()] = vertices;
+            v = vertices.front();
+            vertices.pop_front();
+
+            km._data[v] = vertices;
         }
 
         return is;
@@ -114,9 +135,10 @@ int main(int argc, char* argv[]) {
     srand(static_cast<unsigned int>(time(0)));
 
     size_t n = graph.count_vertices();
-
     float ln = log(static_cast<float>(n));
-    size_t minimum_cut = UINT_MAX, runs = 1; // static_cast<size_t>(n * n * ln), 
+
+    size_t minimum_cut = UINT_MAX;
+    size_t runs = static_cast<size_t>(n * n * ln);
 
     for (size_t i = 0; i < runs; ++i) {
 
