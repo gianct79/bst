@@ -65,12 +65,21 @@ public:
 
     karger_graph& merge_vertices(const size_t &v, const size_t &u) {
 
-        for (matrix_row::const_iterator it = _data[u].begin(); it != _data[u].end(); ++it) {
-            _data[v].push_back(*it);
+        for (matrix_row::const_iterator it_u = _data[u].begin(); it_u != _data[u].end(); ++it_u) {
+            _data[v].push_back(*it_u);
         }
 
         _data[v].remove(u);
         _data.erase(u);
+
+        for (matrix::iterator it_r = _data.begin(); it_r != _data.end(); ++it_r) {
+            for (matrix_row::iterator it_c = it_r->second.begin(); it_c != it_r->second.end(); ++it_c) {
+                if (*it_c == u)
+                    *it_c = v;
+            }
+        }
+
+        remove_self_loops();
 
         return *this;
     }
@@ -90,7 +99,6 @@ public:
             } while (v == u);
 
             km.merge_vertices(v, u);
-            km.remove_self_loops();
         }
     }
 
@@ -131,10 +139,9 @@ int main(int argc, char* argv[]) {
     srand(static_cast<unsigned int>(time(0)));
 
     size_t n = graph.count_vertices();
-    float ln = log(static_cast<float>(n));
 
     size_t minimum_cut = UINT_MAX;
-    size_t runs = static_cast<size_t>(n * n * ln);
+    size_t runs = n - 1;
 
     for (size_t i = 0; i < runs; ++i) {
 
