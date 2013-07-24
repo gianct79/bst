@@ -7,13 +7,25 @@
 #include <sstream>
 
 #include <list>
-#include <vector>
 #include <map>
 
 #include <time.h>
 #include <math.h>
 
 using namespace std;
+
+template <typename T>
+T random_element(T begin, T end) {
+
+    const unsigned long n = distance(begin, end);
+    const unsigned long divisor = (RAND_MAX + 1) / n;
+
+    unsigned long k;
+    do { k = rand() / divisor; } while (k >= n);
+    advance(begin, k);
+
+    return begin;
+}
 
 class karger_graph {
 
@@ -26,17 +38,6 @@ public:
 
     size_t get_size() const {
         return _data.size();
-    }
-
-    vector<matrix_row::value_type> get_vertices() const {
-
-        vector<size_t> vertices;
-
-        for (matrix::const_iterator it = _data.begin(); it != _data.end(); ++it) {
-            vertices.push_back(it->first);
-        }
-
-        return vertices;
     }
 
     size_t count_vertices() const {
@@ -69,12 +70,11 @@ public:
             _data[v].push_back(*it_u);
         }
 
-        _data[v].remove(u);
         _data.erase(u);
 
         for (matrix::iterator it_r = _data.begin(); it_r != _data.end(); ++it_r) {
             for (matrix_row::iterator it_c = it_r->second.begin(); it_c != it_r->second.end(); ++it_c) {
-                if (*it_c == u)
+                if (*it_c == v || *it_c == u)
                     *it_c = v;
             }
         }
@@ -90,15 +90,11 @@ public:
 
         while (km.count_vertices() > 2) {
 
-            vector<size_t> vertices = km.get_vertices();
-
-            size_t v, u;
-            do {
-                v = vertices[rand() % vertices.size()];
-                u = vertices[rand() % vertices.size()];
-            } while (v == u);
-
-            km.merge_vertices(v, u);
+            size_t v = random_element(km._data.begin(), km._data.end())->first;
+            if (km._data[v].size() > 0) {
+                size_t u = *random_element(km._data[v].begin(), km._data[v].end());
+                km.merge_vertices(v, u);
+            }
         }
     }
 
