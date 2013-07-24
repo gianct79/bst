@@ -123,7 +123,7 @@ public:
 
 int main(int argc, char* argv[]) {
 
-    karger_graph graph, minimum_graph;
+    karger_graph graph;
 
     if (argc > 1) {
         ifstream ifs(argv[1], istream::in); ifs >> graph;
@@ -137,7 +137,7 @@ int main(int argc, char* argv[]) {
     size_t n = graph.count_vertices();
 
     size_t minimum_cut = UINT_MAX;
-    size_t runs = n - 1;
+    size_t runs = n * n;
 
     for (size_t i = 0; i < runs; ++i) {
 
@@ -147,15 +147,16 @@ int main(int argc, char* argv[]) {
         size_t cut = copy.count_edges();
 
         if (cut < minimum_cut) {
+
+            cout << "run #: " << i << '\n';
+            cout << "vertex count: " << copy.count_vertices() << '\n';
+            cout << "edge count  : " << cut << '\n';
+
             minimum_cut = cut;
-            minimum_graph = copy;
         }
     }
 
     cout << "runs: " << runs << '\n';
-
-    cout << "vertex count: " << minimum_graph.count_vertices() << '\n';
-    cout << "edge count  : " << minimum_graph.count_edges() << '\n';
 
     cin.get();
 
