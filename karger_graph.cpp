@@ -36,10 +36,6 @@ class karger_graph {
 
 public:
 
-    size_t get_size() const {
-        return _data.size();
-    }
-
     size_t count_vertices() const {
         return _data.size();
     }
@@ -66,6 +62,9 @@ public:
 
     karger_graph& merge_vertices(const size_t &v, const size_t &u) {
 
+        if (v == u)
+            return *this;
+
         for (matrix_row::const_iterator it_u = _data[u].begin(); it_u != _data[u].end(); ++it_u) {
             _data[v].push_back(*it_u);
         }
@@ -74,7 +73,7 @@ public:
 
         for (matrix::iterator it_r = _data.begin(); it_r != _data.end(); ++it_r) {
             for (matrix_row::iterator it_c = it_r->second.begin(); it_c != it_r->second.end(); ++it_c) {
-                if (*it_c == v || *it_c == u)
+                if (*it_c == u)
                     *it_c = v;
             }
         }
@@ -85,8 +84,6 @@ public:
     }
 
     static void random_contraction_algorithm(karger_graph& km) {
-
-        km.remove_self_loops();
 
         while (km.count_vertices() > 2) {
 
@@ -106,16 +103,21 @@ public:
             karger_graph::matrix_row vertices;
             stringstream linestream(line);
 
+            size_t k;
+            if (linestream) {
+                linestream >> k;
+            }
+
             size_t v;
             while (linestream >> v) {
+                km._data[v].remove(k); // remove duplicated edges
                 vertices.push_back(v);
             }
 
-            v = vertices.front();
-            vertices.pop_front();
-
-            km._data[v] = vertices;
+            km._data[k] = vertices;
         }
+
+        km.remove_self_loops();
 
         return is;
     }
