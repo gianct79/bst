@@ -9,20 +9,34 @@
 #include <list>
 #include <map>
 
-#include <time.h>
-#include <math.h>
+#include <random>
 
 using namespace std;
+
+class int_rand {
+
+    random_device _rd;
+    mt19937 _gen;
+
+    uniform_int_distribution<> _dist;
+    
+public:
+    int_rand(int lo, int hi) : _gen { _rd() }, _dist { lo, hi } {
+    }
+
+    int operator()() {
+        return _dist(_gen);
+    }
+};
 
 template <typename T>
 T random_element(T begin, T end) {
 
-    const unsigned long n = distance(begin, end);
-    const unsigned long divisor = (RAND_MAX + 1) / n;
+    const size_t s = distance(begin, end);
 
-    unsigned long k;
-    do { k = rand() / divisor; } while (k >= n);
-    advance(begin, k);
+    int_rand rnd(0, s - 1);
+
+    advance(begin, rnd());
 
     return begin;
 }
@@ -134,11 +148,9 @@ int main(int argc, char* argv[]) {
     cout << "vertex count: " << graph.count_vertices() << '\n';
     cout << "edge count  : " << graph.count_edges() << '\n';
 
-    srand(static_cast<unsigned int>(time(0)));
-
     size_t n = graph.count_vertices();
 
-    size_t minimum_cut = UINT_MAX;
+    size_t minimum_cut = graph.count_vertices();
     size_t runs = n * n;
 
     for (size_t i = 0; i < runs; ++i) {

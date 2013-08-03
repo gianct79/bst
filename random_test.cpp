@@ -3,6 +3,8 @@
  */
 
 #include <iostream>
+#include <list>
+
 #include <random>
 
 using namespace std;
@@ -23,12 +25,31 @@ public:
     }
 };
 
+template <typename T>
+T random_element(T begin, T end) {
+
+    const size_t n = distance(begin, end);
+    cout << "n: " << n << ' ';
+
+    int_rand rnd(0, n - 1);
+
+    advance(begin, rnd());
+
+    return begin;
+}
+
+
 int main() {
 
-    int_rand rnd(1, 10);
+    list<int> values { 1, 7, 10, 3 };
+
+    for (auto i : values)
+        cout << i << ' ';
+
+    cout << '\n';
 
     for (int i = 0; i < 10; ++i)
-        cout << rnd() << ' ';
+        cout << *random_element(values.begin() , values.end()) << '\n';
 
     return 0;
 }
