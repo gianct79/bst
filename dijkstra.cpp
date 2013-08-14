@@ -181,15 +181,17 @@ int main(int argc, char* argv[]) {
     cout << "vertex count: " << g.m() << '\n';
     cout << "edge count  : " << g.n() << '\n';
 
-    int s;
-    cout << "s vertex: ";
+    //int s;
+    //cout << "s vertex: ";
 
-    cin >> s;
-    dijkstra_sp sp(g, s);
+    //cin >> s;
+    dijkstra_sp sp(g, 1);
 
-    cout << "type vertices\n";
-    while (cin >> s) {
-        cout << "1->" << s << ':' << sp.dist(s) << '\n';
+    //cout << "type vertices\n";
+    vector<int> ss = { 7,37,59,82,99,115,133,165,188,197 };
+    //while (cin >> s) {
+    for (auto s : ss) {
+        cout << sp.dist(s) << ',';
     }
 
     cin.get();
