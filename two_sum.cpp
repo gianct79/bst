@@ -6,8 +6,9 @@
 #include <fstream>
 
 #include <vector>
-#include <set>
+#include <map>
 #include <algorithm>
+#include <chrono>
 
 using namespace std;
 
@@ -39,25 +40,25 @@ public:
 
 class two_sum_fast {
 
-    set<long> _d;
     vector<long> _a;
     size_t _cnt;
 
 public:
 
     two_sum_fast(const vector<long> &a) : _a(a.begin(), a.end()), _cnt(0) {
-        for (auto x : a) {
-            _d.insert(x);
-        }
     }
 
     size_t count(const long &sum) {
+        map<long, long> d;
         for (auto x : _a) {
             long l = sum - x;
-            if (x != l && _d.find(l) != _d.end()) {
-                _cnt++;
-                //break; // uncomment for distinct numbers
+            if (d.find(x) != d.end()) {
+                continue;
             }
+            if (d.find(l) != d.end()) {
+                _cnt++; break;
+            }
+            d[x] = l;
         }
         return _cnt;
     }
@@ -99,7 +100,7 @@ public:
             long l = sum - x;
             if (x != l && binary_search::find(l, _a)) {
                 _cnt++;
-                //break; // uncomment for distinct numbers
+                break;
             }
         }
         return _cnt;
@@ -122,23 +123,31 @@ int main(int argc, char* argv[]) {
 
     cout << "list count: " << list.size() << '\n';
 
+    long cnt = 0;
+    for (size_t i = 0; i < list.size(); ++i) {
+        for (size_t j = 0; j < list.size(); ++j) {
+            cnt++;
+        }
+    }
+    cout << "count: " << cnt << '\n';
+
+    /*two_sum_fast two_f(list);
+    for (long l = -10000; l <= 10000; ++l) {
+        two_f.count(l);
+    }
+    cout << "sumf count: " << two_f.get_count() << '\n';
+
     two_sum_bin two_b(list);
     for (long l = -10000; l <= 10000; ++l) {
         two_b.count(l);
     }
     cout << "sumb count: " << two_b.get_count() << '\n';
 
-    two_sum_fast two_f(list);
-    for (long l = -10000; l <= 10000; ++l) {
-        two_f.count(l);
-    }
-    cout << "sumf count: " << two_f.get_count() << '\n';
-
     two_sum_naive two_n(list);
     for (long l = -10000; l <= 10000; ++l) {
         two_n.count(l);
     }
-    cout << "sumn count: " << two_n.get_count() << '\n';
+    cout << "sumn count: " << two_n.get_count() << '\n';*/
 
     return 0;
 }
