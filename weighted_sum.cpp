@@ -1,12 +1,14 @@
+/*
+* Copyleft 1979-2013 GTO Inc. All rights reversed.
+*/
 
 #include <iostream>
-#include <cstdint>
-
 #include <fstream>
 #include <sstream>
 
 #include <vector>
 #include <algorithm>
+#include <cstdint>
 
 using namespace std;
 
