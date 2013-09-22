@@ -57,21 +57,7 @@ class undirected_graph {
     adj_list _adj;
 
 public:
-    size_t v() {
-        return _adj.size();
-    }
-
-    size_t e() {
-        int n(0);
-
-        for (auto &e : _adj) {
-            n += e.second.size();
-        }
-
-        return (n / 2);
-    }
-
-    list<int> vertices() {
+    list<int> v() {
         list<int> b;
         for (auto &a : _adj) {
             b.push_back(a.first);
@@ -79,7 +65,7 @@ public:
         return b;
     }
 
-    edge_list edges() {
+    edge_list e() {
         edge_list b;
         for (auto &a : _adj) {
             for (auto &e : a.second) {
@@ -161,10 +147,10 @@ class kruskal_mst {
 public:
     kruskal_mst(undirected_graph &g, const size_t &maxK) {
 
-        edge_list edges(g.edges());
+        edge_list edges(g.e());
 
         min_queue pq(edges.begin(), edges.end());
-        union_find uf(g.vertices());
+        union_find uf(g.v());
 
         while (uf.count() > maxK) {
             edge e = pq.top(); pq.pop();
@@ -204,8 +190,8 @@ int main(int argc, char* argv[]) {
 
     kruskal_mst mst(g, 3);
 
-    cout << "vertex count  : " << g.v() << '\n';
-    cout << "edge count    : " << g.e() << '\n';
+    cout << "vertex count  : " << g.v().size() << '\n';
+    cout << "edge count    : " << g.e().size() << '\n';
 
     cin.get();
 
