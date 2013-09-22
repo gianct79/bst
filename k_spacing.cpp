@@ -188,7 +188,8 @@ public:
             if (!uf.connected(v, w))
                 break;
         }
-        cout << "max-k-spacing : " <<_mst.back().weight() << '\n';
+
+        cout << "max-k-spacing : " << _mst.back().weight() << '\n';
     }
 };
 
