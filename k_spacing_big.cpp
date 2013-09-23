@@ -3,11 +3,11 @@
 */
 
 #include <iostream>
-
 #include <fstream>
-#include <sstream>
 
-#include <map>
+#include <bitset>
+
+#include <unordered_map>
 #include <list>
 #include <queue>
 
@@ -15,22 +15,22 @@ using namespace std;
 
 class edge {
 
-    int _v;
-    int _w;
-    int _weight;
+    unsigned _v;
+    unsigned _w;
+    size_t _weight;
 
 public:
     edge() : edge(0, 0, 0) {
     }
 
-    edge(const int &v, const int &w, const int &weight) : _v(v), _w(w), _weight(weight) {
+    edge(const unsigned &v, const unsigned &w, const size_t &weight) : _v(v), _w(w), _weight(weight) {
     }
 
-    int either() {
+    unsigned either() {
         return _v;
     }
 
-    int other(const int &v) {
+    unsigned other(const unsigned &v) {
         if (v == _v)
             return _w;
         else if (v == _w)
@@ -38,7 +38,7 @@ public:
         throw logic_error("inconsistent edge");
     }
 
-    int weight() const {
+    size_t weight() const {
         return _weight;
     }
 
@@ -48,32 +48,37 @@ public:
 };
 
 typedef list<edge> edge_list;
+typedef list<unsigned> vertex_list;
 typedef queue<edge> edge_queue;
 typedef priority_queue<edge> min_queue;
 
-class undirected_graph {
+typedef list<bitset<24>> bit_list;
 
-    typedef map<int, edge_list> adj_list;
-    adj_list _adj;
+void generate_bits(bit_list &bitlist, const size_t &pos) {
 
-public:
-    list<int> v() {
-        list<int> b;
-        for (auto &a : _adj) {
-            b.push_back(a.first);
-        }
-        return b;
+    bit_list::value_type bits("1");
+    bits.set(pos); bitlist.push_back(bits);
+
+    for (size_t i = pos; i < bits.size() - 1; ++i) {
+        bits <<= 1; bitlist.push_back(bits);
     }
 
-    edge_list e() {
-        edge_list b;
-        for (auto &a : _adj) {
-            for (auto &e : a.second) {
-                if (e.other(a.first) > a.first)
-                    b.push_back(e);
-            }
-        }
-        return b;
+    if (pos < bits.size() - 1)
+        generate_bits(bitlist, pos + 1);
+}
+
+class undirected_graph {
+
+    edge_list _edges;
+    vertex_list _vertices;
+
+public:
+    vertex_list v() const {
+        return _vertices;
+    }
+
+    edge_list e() const {
+        return _edges;
     }
 
     friend istream& operator>>(istream& is, undirected_graph& g) {
@@ -81,16 +86,36 @@ public:
         string line;
         getline(is, line);
 
+        unsigned vertices(0);
+        unordered_map<bit_list::value_type, unsigned> nodes;
+
+        bit_list bits;
+        generate_bits(bits, 0);
+
         while (getline(is, line)) {
 
-            stringstream linestream(line);
+            auto &end = remove(line.begin(), line.end(), ' ');
+            line.erase(end, line.end());
 
-            int v, w, weight;
-            if (linestream) {
-                linestream >> v >> w >> weight;
+            bit_list::value_type node(line);
+            if (nodes.count(node) == 0) {
+                g._vertices.push_back(++vertices);
+                nodes[node] = vertices;
+            }
+        }
 
-                g._adj[v].push_back(edge(v, w, weight));
-                g._adj[w].push_back(edge(w, v, weight));
+        for (auto &n : nodes) {
+            for (auto &b : bits) {
+
+                auto &h = n.first ^ b;
+                if (nodes.count(h) > 0) {
+
+                    size_t weight = (n.first ^ h).count();
+                    unsigned v = n.second;
+                    unsigned w = nodes[h];
+
+                    g._edges.push_back(edge(v, w, weight));
+                }
             }
         }
 
@@ -100,17 +125,17 @@ public:
 
 class union_find {
 
-    map<int, list<int>> _id;
+    unordered_map<unsigned, vertex_list> _id;
 
 public:
-    union_find(const list<int> &src) {
-        int id(0);
+    union_find(vertex_list &src) {
+        unsigned id(0);
         for (auto &e : src) {
             _id[++id].push_back(e);
         }
     }
 
-    int find(const int &p) const {
+    unsigned find(const unsigned &p) const {
         for (auto &i : _id) {
             for (auto &e : i.second) {
                 if (p == e)
@@ -120,10 +145,10 @@ public:
         return 0;
     }
 
-    void join(const int &p, const int &q) {
+    void join(const unsigned &p, const unsigned &q) {
 
-        int idP = find(p);
-        int idQ = find(q);
+        unsigned idP = find(p);
+        unsigned idQ = find(q);
 
         if (idP != idQ) {
             _id[idP].merge(_id[idQ]);
@@ -131,7 +156,7 @@ public:
         }
     }
 
-    bool connected(const int &p, const int &q) const {
+    bool connected(const unsigned &p, const unsigned &q) const {
         return find(p) == find(q);
     }
 
@@ -145,18 +170,20 @@ class kruskal_mst {
     edge_queue _mst;
 
 public:
-    kruskal_mst(undirected_graph &g, const size_t &maxK) {
+    kruskal_mst(undirected_graph &g) {
 
         edge_list edges(g.e());
 
         min_queue pq(edges.begin(), edges.end());
         union_find uf(g.v());
 
-        while (uf.count() > maxK) {
+        size_t v = g.v().size();
+
+        while (!pq.empty() && _mst.size() < v - 1) {
             edge e = pq.top(); pq.pop();
 
-            int v = e.either();
-            int w = e.other(v);
+            unsigned v = e.either();
+            unsigned w = e.other(v);
 
             if (uf.connected(v, w))
                 continue;
@@ -165,18 +192,7 @@ public:
             _mst.push(e);
         }
 
-        while (!pq.empty()) {
-            edge e = pq.top(); pq.pop();
-
-            int v = e.either();
-            int w = e.other(v);
-
-            if (!uf.connected(v, w))
-                break;
-        }
-
-        if (!_mst.empty())
-            cout << "max-k-spacing : " << _mst.back().weight() << '\n';
+        cout << "max-k-cluster : " << uf.count() << '\n';
     }
 };
 
@@ -188,7 +204,7 @@ int main(int argc, char* argv[]) {
         ifstream ifs(argv[1], istream::in); ifs >> g;
     }
 
-    kruskal_mst mst(g, 3);
+    kruskal_mst mst(g);
 
     cout << "vertex count  : " << g.v().size() << '\n';
     cout << "edge count    : " << g.e().size() << '\n';
