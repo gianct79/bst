@@ -6,8 +6,9 @@
 #include <fstream>
 
 #include <vector>
-#include <string>
 #include <sstream>
+
+#include <algorithm>
 
 using namespace std;
 
@@ -22,37 +23,31 @@ typedef vector<vector<int>> result_table;
 class knapsack {
 
     item_list _items;
-    result_table _knapsack;
 
     int _capacity;
+
+    int find_best_pack_r(const int capacity, const int n)
+    {
+        if (n == 0 || capacity == 0)
+            return 0;
+
+        if (_items[n - 1].weight > capacity) {
+            return find_best_pack_r(capacity, n - 1);
+        }
+        else {
+            return max(_items[n - 1].value
+                + find_best_pack_r(capacity - _items[n - 1].weight, n - 1),
+                find_best_pack_r(capacity, n - 1)
+                );
+        }
+    }
 
 public:
     knapsack() : _capacity(0) {
     }
 
     int find_best_pack() {
-        for (item item : _items) {
-            for (auto col = 0; col < _capacity + 1; ++col) {
-
-                if (item.weight > col) {
-                    _knapsack[1][col] = _knapsack[0][col];
-                } else {
-                    int remaining = col - item.weight;
-                    int new_value = item.value + _knapsack[0][remaining];
-                    int pre_value = _knapsack[0][col];
-
-                    if (pre_value >= new_value) {
-                        _knapsack[1][col] = _knapsack[0][col];
-                    }
-                    else {
-                        _knapsack[1][col] = new_value;
-                    }
-                }
-            }
-            copy(_knapsack[1].begin(), _knapsack[1].end(), _knapsack[0].begin());
-        }
-
-        return _knapsack[1][_capacity];
+        return find_best_pack_r(_capacity, _items.size());
     }
 
     friend istream& operator>>(istream& is, knapsack& k) {
@@ -76,8 +71,6 @@ public:
             }
         }
 
-        k._knapsack.resize(2, vector<int>(k._capacity + 1));
-
         return is;
     }
 };
@@ -91,8 +84,6 @@ int main(int argc, char* argv[]) {
     }
 
     cout << k.find_best_pack() << '\n';
-
-    cin.get();
 
     return 0;
 }
