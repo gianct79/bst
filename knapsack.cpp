@@ -83,7 +83,7 @@ int main(int argc, char* argv[]) {
         ifstream ifs(argv[1], istream::in); ifs >> k;
     }
 
-    int best_pack = k.find_best_pack();
+    cout << k.find_best_pack() << '\n';
 
     return 0;
 }
