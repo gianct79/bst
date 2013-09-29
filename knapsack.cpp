@@ -32,20 +32,20 @@ public:
 
     int find_best_pack() {
         for (item item : _items) {
-            for (auto col = 0; col < _capacity + 1; ++col) {
+            for (auto w = 0; w <= _capacity; ++w) {
 
-                if (item.weight > col) {
-                    _knapsack[1][col] = _knapsack[0][col];
+                if (item.weight > w) {
+                    _knapsack[1][w] = _knapsack[0][w];
                 } else {
-                    int remaining = col - item.weight;
+                    int remaining = w - item.weight;
                     int new_value = item.value + _knapsack[0][remaining];
-                    int pre_value = _knapsack[0][col];
+                    int pre_value = _knapsack[0][w];
 
                     if (pre_value >= new_value) {
-                        _knapsack[1][col] = _knapsack[0][col];
+                        _knapsack[1][w] = _knapsack[0][w];
                     }
                     else {
-                        _knapsack[1][col] = new_value;
+                        _knapsack[1][w] = new_value;
                     }
                 }
             }
