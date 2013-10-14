@@ -12,6 +12,7 @@
 #include <list>
 #include <vector>
 #include <queue>
+#include <stack>
 #include <cmath>
 
 using namespace std;
@@ -24,6 +25,14 @@ class edge {
 
 public:
     edge(const int &v, const int &w, const float &weight) : _v(v), _w(w), _weight(weight) {
+    }
+
+    int v() const {
+        return _v;
+    }
+
+    int w() const {
+        return _w;
     }
 
     int either() const {
@@ -69,6 +78,18 @@ public:
 
     const edge_list& adj(const int &v) const {
         return _adj.at(v);
+    }
+
+    const float minWeight(const int &v, const int &w) const {
+
+        float weight = 999999.9999f;
+
+        for (auto &e : _edges) {
+            if (e.v() == v && e.w() == w && e.weight() < weight)
+                weight = e.weight();
+        }
+
+        return weight;
     }
 
     friend istream& operator>>(istream& is, undirected_graph& g) {
@@ -118,58 +139,96 @@ public:
 class lazy_prim_mst {
 
     typedef map<int, bool> visited_map;
-    typedef queue<edge> edge_queue;
     typedef priority_queue<edge> min_queue;
 
-    visited_map _marked;
-    edge_queue _mst;
-    min_queue _pq;
+    const undirected_graph _g;
 
-    void visit(undirected_graph &g, const int &v) {
+    visited_map _visited;
+    edge_list _mst;
+    min_queue _min;
 
-        _marked[v] = true;
+    void visit(const int &v) {
 
-        for (auto &e : g.adj(v)) {
-            if (!_marked[e.other(v)])
-                _pq.push(e);
+        _visited[v] = true;
+
+        for (auto &e : _g.adj(v)) {
+            if (!_visited[e.other(v)])
+                _min.push(e);
         }
     }
 
 public:
-    lazy_prim_mst(undirected_graph &g) {
+    lazy_prim_mst(const undirected_graph &g) : _g(g) {
 
-        visit(g, 1);
+        visit(0);
 
-        while (!_pq.empty()) {
-            edge e = _pq.top(); _pq.pop();
+        while (!_min.empty()) {
+            edge e = _min.top(); _min.pop();
 
             int v = e.either();
             int w = e.other(v);
 
-            if (_marked[v] && _marked[w])
+            if (_visited[v] && _visited[w])
                 continue;
 
-            _mst.push(e);
+            _mst.push_back(e);
 
-            if (!_marked[v])
-                visit(g, v);
-            if (!_marked[w])
-                visit(g, w);
+            if (!_visited[v])
+                visit(v);
+            if (!_visited[w])
+                visit(w);
         }
     }
 
     float weight() const {
 
         float sum(.0f);
-        edge_queue edges(_mst);
-
-        while (!edges.empty()) {
-            edge e = edges.front(); edges.pop();
+        for (auto &e : _mst) {
             sum += e.weight();
         }
 
         return sum;
     }
+
+    float tsp_weight() const {
+
+        map<int, vector<int>> dfs_walk;
+
+        for (auto &e : _mst) {
+            dfs_walk[e.v()].push_back(e.w());
+        }
+
+        vector<int> ham_tour;
+        visited_map visited;
+
+        stack<int> to_visit;
+        to_visit.push(0);
+
+        while (!to_visit.empty()) {
+
+            int top = to_visit.top(); to_visit.pop();
+            visited[top] = true;
+
+            ham_tour.push_back(top);
+
+            for (auto &v : dfs_walk[top]) {
+                if (!visited[v])
+                    to_visit.push(v);
+            }
+        }
+
+        ham_tour.push_back(0);
+
+        float sum(.0f);
+
+        for (size_t i = 1; i < ham_tour.size(); ++i) {
+
+            sum += _g.minWeight(ham_tour[i - 1], ham_tour[i]);
+        }
+
+        return sum;
+    }
+
 };
 
 int main(int argc, char* argv[]) {
@@ -186,6 +245,7 @@ int main(int argc, char* argv[]) {
     cout << "edge count  : " << g.edges().size() << '\n';
 
     cout << "prim weight : " << mst.weight() << '\n';
+    cout << "tsp weight  : " << mst.tsp_weight() << '\n';
 
     cin.get();
 
