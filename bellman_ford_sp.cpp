@@ -7,7 +7,7 @@
 #include <fstream>
 #include <sstream>
 
-#include <map>
+#include <vector>
 #include <set>
 #include <list>
 
@@ -83,11 +83,11 @@ public:
 
 const int MAX = 0x3f3f3f3f;
 
-typedef map<int, int> distance_map;
+typedef vector<int> distance_vector;
 
 class bellman_ford_sp {
 
-    distance_map _dist_to;
+    distance_vector _dist_to;
     bool _negative_cycle;
 
 public:
@@ -97,34 +97,35 @@ public:
         _negative_cycle = false;
 
         const vertice_list &vertices = g.vertices();
+        _dist_to.reserve(vertices.size());
 
         for (auto &v : vertices) {
-            _dist_to[v] = MAX;
+            _dist_to[v - 1] = MAX;
         }
-        _dist_to[s] = 0;
+        _dist_to[s - 1] = 0;
 
-        for (size_t i = 0; i < vertices.size(); ++i) {
+        for (size_t i = 0; i <= vertices.size() - 1; ++i) {
 
             for (auto &e : g.edges()) {
 
                 int u = e.from();
                 int v = e.to();
 
-                if (_dist_to[v] > _dist_to[u] + e.weight()) {
-                    _dist_to[v] = _dist_to[u] + e.weight();
+                if (_dist_to[v - 1] > _dist_to[u - 1] + e.weight()) {
+                    _dist_to[v - 1] = _dist_to[u - 1] + e.weight();
                 }
             }
         }
 
-        /*for (auto &e : g.edges()) {
+        for (auto &e : g.edges()) {
             int u = e.from();
             int v = e.to();
 
-            if (_dist_to[v] > _dist_to[u] + e.weight()) {
+            if (_dist_to[v - 1] > _dist_to[u - 1] + e.weight()) {
                 _negative_cycle = true;
                 break;
             }
-        }*/
+        }
     }
 
     bool negativeCycle() const {
@@ -132,11 +133,11 @@ public:
     }
 
     int dist(int v) const {
-        return _dist_to.at(v);
+        return _dist_to[v - 1];
     }
 
     bool hasPath(int v) const {
-        return _dist_to.at(v) < MAX;
+        return _dist_to[v - 1] < MAX;
     }
 };
 
@@ -148,23 +149,24 @@ int main(int argc, char* argv[]) {
         ifstream ifs(argv[1], istream::in); ifs >> g;
     }
 
+    cout << "n: " << g.vertices().size() << '\n';
+    cout << "m: " << g.edges().size() << '\n';
+
     int sd = MAX;
 
-    //for (auto &v : g.vertices()) {
-        bellman_ford_sp sp(g, 1);
+    for (auto &w : g.vertices()) {
 
-        //if (sp.negativeCycle()) {
-        //    break;
-        //}
+        bellman_ford_sp sp(g, w);
+        cout << "-: " << sp.negativeCycle();
 
-        for (auto &w : g.vertices()) {
-            int d = sp.dist(w);
+        for (auto &v : g.vertices()) {
+            int d = sp.dist(v);
             if (d < sd)
                 sd = d;
         }
-    //}
 
-    cout << sd << '\n';
+        cout << " s: " << sd << '\n';
+    }
 
     cin.get();
 
