@@ -52,7 +52,7 @@ public:
     }
 
     friend bool operator < (const edge& lhs, const edge& rhs) {
-        return lhs.weight() > rhs.weight();
+        return lhs.weight() < rhs.weight();
     }
 };
 
@@ -112,9 +112,12 @@ public:
             }
         }
 
-        for (size_t i = 0; i < city_list.size(); ++i) {
+        for (auto i = 0; i < city_list.size(); ++i) {
 
-            for (size_t j = i + 1; j < city_list.size(); ++j) {
+            for (auto j = 0; j < city_list.size(); ++j) {
+
+                if (i == j)
+                  continue;
 
                 auto &x = city_list[i];
                 auto &y = city_list[j];
@@ -124,8 +127,8 @@ public:
                 g._edges.push_back(edge(i, j, weight));
                 g._adj[i].push_back(g._edges.back());
 
-                g._edges.push_back(edge(j, i, weight));
-                g._adj[j].push_back(g._edges.back());
+                //g._edges.push_back(edge(j, i, weight));
+                //g._adj[j].push_back(g._edges.back());
 
                 g._vertices.insert(i);
                 g._vertices.insert(j);
