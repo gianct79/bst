@@ -3,7 +3,6 @@
 */
 
 #include <iostream>
-#include <fstream>
 
 void run_length_encoding(std::istream &buffer) {
 
@@ -12,7 +11,7 @@ void run_length_encoding(std::istream &buffer) {
         char read, next;
 
         buffer >> read;
-        int count = 1;
+        size_t count = 1;
 
         while (buffer >> next) {
 
