@@ -3,7 +3,6 @@
 */
 
 #include <iostream>
-
 #include <unordered_map>
 
 using namespace std;
@@ -78,7 +77,7 @@ Progress indicator;
 void generateSolutions(const Note &change, const Node &node, Node &solution) {
 
 	if (solution.countNotes() > 0 && node.countNotes() > solution.countNotes()) {
-        // Suggestion from diegodie: only accept solutions that could generate fewer notes
+		// Suggestion from diegodie: only accept solutions that could generate fewer notes
 		return;
 	}
 
