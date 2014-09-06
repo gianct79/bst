@@ -24,10 +24,10 @@ T pow_i(T const &base, T exp)
 template <typename T>
 T pow(T const &base, T exp)
 {
-    bool neg = (exp < 0);
+    bool neg(exp < 0);
     if (neg)
         exp *= -1;
-    T result = pow_i(base, exp);
+    T result(pow_i(base, exp));
     if (neg)
         result = (1 / result);
     return result;
