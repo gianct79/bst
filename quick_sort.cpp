@@ -62,8 +62,8 @@ int main(int argc, char **argv) {
 
     quick_sort<int>::sort(list);
 
-    for (vector<int>::iterator it = list.begin(); it != list.end(); ++it) {
-        cout << *it << '\n';
+    for (auto i : list) {
+        cout << i << '\n';
     }
 
     return 0;
