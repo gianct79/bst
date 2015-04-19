@@ -1,2 +1,2 @@
 #bst
-Collection of BST from GTO Inc.
+Collection of exercises from GTO Inc.
