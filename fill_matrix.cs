@@ -37,10 +37,10 @@ namespace gtlib
                 int x = rand.Next(GetX());
                 int y = rand.Next(GetY());
 
-				if (values[x, y])
-					continue;
+                if (values[x, y])
+                    continue;
 
-				values[x, y] = true;
+                values[x, y] = true;
                 n--;
             }
         }

@@ -71,13 +71,13 @@ int main(int argc, char **argv) {
     if (argc > 1) {
         ifstream input(argv[1], istream::in);
         if (input) {
-    	    copy(istream_iterator<int>(input), eos, back_inserter(list));
+            copy(istream_iterator<int>(input), eos, back_inserter(list));
         }
     }
 
     if (list.size() == 0) {
-    	cout << "type int values, one per line...\n";
-    	copy(istream_iterator<int>(cin), eos, back_inserter(list));
+        cout << "type int values, one per line...\n";
+        copy(istream_iterator<int>(cin), eos, back_inserter(list));
     }
 
     size_t cnt = sortAndCount(list);

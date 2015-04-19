@@ -13,19 +13,19 @@ using namespace std;
 template <class T>
 class quick_sort {
 
-	static size_t partition(vector<T> &a, size_t lo, size_t hi) {
+    static size_t partition(vector<T> &a, size_t lo, size_t hi) {
 
         T p = a[lo];
-	    size_t i = lo + 1;
+        size_t i = lo + 1;
 
         for (size_t j = i; j < hi; j++) {
             if (a[j] < p)
                 swap<int>(a[j], a[i++]);
-	    }
+        }
         swap<int>(a[lo], a[--i]);
 
         return i;
-	}
+    }
 
     static void sort(vector<T> &a, size_t lo, size_t hi) {
 
@@ -38,7 +38,7 @@ class quick_sort {
     }
 
 public:
-	static void sort(vector<T> &a) {
+    static void sort(vector<T> &a) {
         sort(a, 0, a.size());
     }
 };
@@ -51,13 +51,13 @@ int main(int argc, char **argv) {
     if (argc > 1) {
         ifstream input(argv[1], istream::in);
         if (input) {
-    	    copy(istream_iterator<int>(input), eos, back_inserter(list));
+            copy(istream_iterator<int>(input), eos, back_inserter(list));
         }
     }
 
     if (list.size() == 0) {
-    	cout << "type int values, one per line...\n";
-    	copy(istream_iterator<int>(cin), eos, back_inserter(list));
+        cout << "type int values, one per line...\n";
+        copy(istream_iterator<int>(cin), eos, back_inserter(list));
     }
 
     quick_sort<int>::sort(list);
