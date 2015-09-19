@@ -1,5 +1,5 @@
 /*
- * Copyleft 1979-2013 GTO Inc. All rights reversed.
+ * Copyleft GTO Inc. All rights reversed.
  */
 
 #include <iostream>
@@ -15,9 +15,9 @@ class int_rand {
     mt19937 _gen;
 
     uniform_int_distribution<> _dist;
-    
+
 public:
-    int_rand(int lo, int hi) : _gen { _rd() }, _dist { lo, hi } {
+    int_rand(int lo, int hi) : _gen{_rd()}, _dist{lo, hi} {
     }
 
     int operator()() {
@@ -25,7 +25,7 @@ public:
     }
 };
 
-template <typename T>
+template<typename T>
 T random_element(T begin, T end) {
 
     const size_t n = distance(begin, end);
@@ -41,7 +41,7 @@ T random_element(T begin, T end) {
 
 int main() {
 
-    list<int> values { 1, 7, 10, 3 };
+    list<int> values{1, 7, 10, 3};
 
     for (auto i : values)
         cout << i << ' ';
@@ -49,7 +49,7 @@ int main() {
     cout << '\n';
 
     for (int i = 0; i < 10; ++i)
-        cout << *random_element(values.begin() , values.end()) << '\n';
+        cout << *random_element(values.begin(), values.end()) << '\n';
 
     return 0;
 }

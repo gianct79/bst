@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 
@@ -42,14 +42,14 @@ public:
         return _weight;
     }
 
-    friend bool operator < (const edge& lhs, const edge& rhs) {
+    friend bool operator<(const edge &lhs, const edge &rhs) {
         return lhs.weight() > rhs.weight();
     }
 };
 
 class undirected_graph {
 
-    typedef vector<edge> edge_list;
+    typedef vector <edge> edge_list;
     typedef map<int, edge_list> adj_list;
 
     adj_list _adj;
@@ -69,11 +69,11 @@ public:
         return (n / 2);
     }
 
-    edge_list& adj(const int &v) {
+    edge_list &adj(const int &v) {
         return _adj[v];
     }
 
-    friend istream& operator>>(istream& is, undirected_graph& g) {
+    friend istream &operator>>(istream &is, undirected_graph &g) {
 
         string line;
         getline(is, line);
@@ -98,8 +98,8 @@ public:
 class lazy_prim_mst {
 
     typedef map<int, bool> visited_map;
-    typedef queue<edge> edge_queue;
-    typedef priority_queue<edge> min_queue;
+    typedef queue <edge> edge_queue;
+    typedef priority_queue <edge> min_queue;
 
     visited_map _marked;
     edge_queue _mst;
@@ -121,12 +121,13 @@ public:
         visit(g, 1);
 
         while (!_pq.empty()) {
-            edge e = _pq.top(); _pq.pop();
+            edge e = _pq.top();
+            _pq.pop();
 
             int v = e.either();
             int w = e.other(v);
 
-            if (_marked[v] && _marked[w]) 
+            if (_marked[v] && _marked[w])
                 continue;
 
             _mst.push(e);
@@ -144,7 +145,8 @@ public:
         edge_queue edges(_mst);
 
         while (!edges.empty()) {
-            edge e = edges.front(); edges.pop();
+            edge e = edges.front();
+            edges.pop();
             sum += e.weight();
         }
 
@@ -152,12 +154,13 @@ public:
     }
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
     undirected_graph g;
 
     if (argc > 1) {
-        ifstream ifs(argv[1], istream::in); ifs >> g;
+        ifstream ifs(argv[1], istream::in);
+        ifs >> g;
     }
 
     lazy_prim_mst mst(g);

@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <stdexcept>
@@ -9,54 +9,54 @@ using namespace std;
 
 namespace gtlib {
 
-template <class T>
-class stack {
+    template<class T>
+    class stack {
 
-    struct node {
-        T value_;
-        node *prev_;
+        struct node {
+            T value_;
+            node *prev_;
 
-        node(const T& v) : value_(v), prev_(nullptr) {
+            node(const T &v) : value_(v), prev_(nullptr) {
+            }
+        };
+
+        node *top_;
+
+    public:
+        stack() : top_(nullptr) {
+        }
+
+        ~stack() {
+            while (top_) {
+                pop();
+            }
+        }
+
+        void push(const T &v) {
+            node *n = new node(v);
+
+            if (top_ != nullptr) {
+                n->prev_ = top_;
+            }
+
+            top_ = n;
+        }
+
+        T pop() {
+            if (top_ == nullptr) {
+                throw logic_error("underflow");
+            }
+
+            T v = top_->value_;
+
+            node *t = top_;
+            top_ = top_->prev_;
+
+            delete t;
+
+            return v;
         }
     };
-
-    node *top_;
-
-public:
-    stack() : top_(nullptr) {
-    }
-    
-    ~stack() {
-        while (top_) {
-            pop();
-        }
-    }
-    
-    void push(const T& v) {
-        node *n = new node(v);
-        
-        if (top_ != nullptr) {
-            n->prev_ = top_;
-        }
-        
-        top_ = n;
-    }
-
-    T pop() {
-        if (top_ == nullptr) {
-            throw logic_error("underflow");
-        }
-
-        T v = top_->value_;
-        
-        node *t = top_;
-        top_ = top_->prev_;
-        
-        delete t;
-        
-        return v;
-    }
-};
 
 }
 

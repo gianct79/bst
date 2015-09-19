@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <fstream>
@@ -17,8 +17,8 @@ struct item {
     int weight;
 };
 
-typedef vector<item> item_list;
-typedef vector<vector<int>> result_table;
+typedef vector <item> item_list;
+typedef vector <vector<int>> result_table;
 
 class knapsack {
 
@@ -26,8 +26,7 @@ class knapsack {
 
     int _capacity;
 
-    int find_best_pack_r(const int capacity, const int n)
-    {
+    int find_best_pack_r(const int capacity, const int n) {
         if (n == 0 || capacity == 0)
             return 0;
 
@@ -36,9 +35,9 @@ class knapsack {
         }
         else {
             return max(_items[n - 1].value
-                + find_best_pack_r(capacity - _items[n - 1].weight, n - 1),
-                find_best_pack_r(capacity, n - 1)
-                );
+                       + find_best_pack_r(capacity - _items[n - 1].weight, n - 1),
+                       find_best_pack_r(capacity, n - 1)
+            );
         }
     }
 
@@ -50,7 +49,7 @@ public:
         return find_best_pack_r(_capacity, _items.size());
     }
 
-    friend istream& operator>>(istream& is, knapsack& k) {
+    friend istream &operator>>(istream &is, knapsack &k) {
 
         string line;
         getline(is, line);
@@ -75,12 +74,13 @@ public:
     }
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
     knapsack k;
 
     if (argc > 1) {
-        ifstream ifs(argv[1], istream::in); ifs >> k;
+        ifstream ifs(argv[1], istream::in);
+        ifs >> k;
     }
 
     cout << k.find_best_pack() << '\n';

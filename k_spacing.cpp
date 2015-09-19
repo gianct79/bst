@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 
@@ -42,14 +42,14 @@ public:
         return _weight;
     }
 
-    friend bool operator < (const edge& lhs, const edge& rhs) {
+    friend bool operator<(const edge &lhs, const edge &rhs) {
         return lhs.weight() > rhs.weight();
     }
 };
 
-typedef list<edge> edge_list;
-typedef queue<edge> edge_queue;
-typedef priority_queue<edge> min_queue;
+typedef list <edge> edge_list;
+typedef queue <edge> edge_queue;
+typedef priority_queue <edge> min_queue;
 
 class undirected_graph {
 
@@ -90,7 +90,7 @@ public:
         return b;
     }
 
-    friend istream& operator>>(istream& is, undirected_graph& g) {
+    friend istream &operator>>(istream &is, undirected_graph &g) {
 
         string line;
         getline(is, line);
@@ -167,7 +167,8 @@ public:
         union_find uf(g.vertices());
 
         while (uf.count() > maxK) {
-            edge e = pq.top(); pq.pop();
+            edge e = pq.top();
+            pq.pop();
 
             int v = e.either();
             int w = e.other(v);
@@ -180,7 +181,8 @@ public:
         }
 
         while (!pq.empty()) {
-            edge e = pq.top(); pq.pop();
+            edge e = pq.top();
+            pq.pop();
 
             int v = e.either();
             int w = e.other(v);
@@ -194,12 +196,13 @@ public:
     }
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
     undirected_graph g;
 
     if (argc > 1) {
-        ifstream ifs(argv[1], istream::in); ifs >> g;
+        ifstream ifs(argv[1], istream::in);
+        ifs >> g;
     }
 
     kruskal_mst mst(g, 3);

@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <locale>
@@ -19,18 +19,21 @@ class index_min_pq {
     int NMAX, N, *heap, *index, *keys;
 
     void swap(int i, int j) {
-        int t = heap[i]; heap[i] = heap[j]; heap[j] = t;
-        index[heap[i]] = i; index[heap[j]] = j;
+        int t = heap[i];
+        heap[i] = heap[j];
+        heap[j] = t;
+        index[heap[i]] = i;
+        index[heap[j]] = j;
     }
 
-    void bubbleUp(int k)    {
-        while (k > 1 && keys[heap[k / 2]] > keys[heap[k]])   {
+    void bubbleUp(int k) {
+        while (k > 1 && keys[heap[k / 2]] > keys[heap[k]]) {
             swap(k, k / 2);
             k = k / 2;
         }
     }
 
-    void bubbleDown(int k)  {
+    void bubbleDown(int k) {
         int j;
         while (2 * k <= N) {
             j = 2 * k;
@@ -45,7 +48,7 @@ class index_min_pq {
 
 public:
 
-    index_min_pq(int NMAX)  {
+    index_min_pq(int NMAX) {
         this->NMAX = NMAX;
         N = 0;
         keys = new int[NMAX + 1];
@@ -61,15 +64,15 @@ public:
         delete[] index;
     }
 
-    bool isEmpty()  {
+    bool isEmpty() {
         return N == 0;
     }
 
-    bool contains(int i)    {
+    bool contains(int i) {
         return index[i] != -1;
     }
 
-    int size()  {
+    int size() {
         return N;
     }
 
@@ -81,11 +84,11 @@ public:
         bubbleUp(N);
     }
 
-    int minIndex()  {
+    int minIndex() {
         return heap[1];
     }
 
-    int minKey()    {
+    int minKey() {
         return keys[heap[1]];
     }
 
@@ -98,27 +101,27 @@ public:
         return min;
     }
 
-    int key(int i)    {
+    int key(int i) {
         return keys[i];
     }
 
-    void change(int i, int key)  {
+    void change(int i, int key) {
         keys[i] = key;
         bubbleUp(index[i]);
         bubbleDown(index[i]);
     }
 
-    void decKey(int i, int key)    {
+    void decKey(int i, int key) {
         keys[i] = key;
         bubbleUp(index[i]);
     }
 
-    void incKey(int i, int key)    {
+    void incKey(int i, int key) {
         keys[i] = key;
         bubbleDown(index[i]);
     }
 
-    void delKey(int i)   {
+    void delKey(int i) {
         int ind = index[i];
         swap(ind, N--);
         bubbleUp(ind);
@@ -158,7 +161,7 @@ class graph {
 
 public:
 
-    typedef vector<edge> edge_list;
+    typedef vector <edge> edge_list;
     typedef map<int, edge_list> adj_list;
 
     adj_list _adj;
@@ -191,7 +194,7 @@ public:
         colon_is_space() : ctype<char>(get_table()) {
         }
 
-        static ctype_base::mask const* get_table() {
+        static ctype_base::mask const *get_table() {
             static ctype_base::mask rc[ctype::table_size];
             rc['\t'] = ctype_base::space;
             rc[','] = ctype_base::space;
@@ -199,7 +202,7 @@ public:
         }
     };
 
-    friend istream& operator>>(istream& is, graph& g) {
+    friend istream &operator>>(istream &is, graph &g) {
 
         string line;
         while (getline(is, line)) {
@@ -273,8 +276,8 @@ public:
         return _dist_to[v] < INT_MAX;
     }
 
-    stack<edge> path(int v) {
-        stack<edge> path;
+    stack <edge> path(int v) {
+        stack <edge> path;
         for (auto e = _edge_to[v]; e.to() != 0; e = _edge_to[e.from()]) {
             path.push(e);
         }
@@ -282,12 +285,13 @@ public:
     }
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
     graph g;
 
     if (argc > 1) {
-        ifstream ifs(argv[1], istream::in); ifs >> g;
+        ifstream ifs(argv[1], istream::in);
+        ifs >> g;
     }
 
     cout << "vertex count: " << g.m() << '\n';
@@ -300,7 +304,7 @@ int main(int argc, char* argv[]) {
     dijkstra_sp sp(g, 1);
 
     //cout << "type vertices\n";
-    vector<int> ss = { 7, 37, 59, 82, 99, 115, 133, 165, 188, 197 };
+    vector<int> ss = {7, 37, 59, 82, 99, 115, 133, 165, 188, 197};
     //while (cin >> s) {
     for (auto s : ss) {
         cout << sp.dist(s) << ',';

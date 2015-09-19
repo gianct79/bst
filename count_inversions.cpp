@@ -1,5 +1,5 @@
 /*
- * Copyleft 1979-2013 GTO Inc. All rights reversed.
+ * Copyleft GTO Inc. All rights reversed.
  */
 
 #include <iostream>
@@ -12,8 +12,8 @@
 
 using namespace std;
 
-template <class T>
-size_t countSplitInv(vector<T> &a, const vector<T> &b, const vector<T> &c) {
+template<class T>
+size_t countSplitInv(vector <T> &a, const vector <T> &b, const vector <T> &c) {
 
     size_t cnt = 0;
 
@@ -37,8 +37,8 @@ size_t countSplitInv(vector<T> &a, const vector<T> &b, const vector<T> &c) {
     return cnt;
 }
 
-template <class T>
-size_t sortAndCount(vector<T> &a) {
+template<class T>
+size_t sortAndCount(vector <T> &a) {
 
     size_t length = a.size();
 
@@ -47,11 +47,11 @@ size_t sortAndCount(vector<T> &a) {
 
     size_t mid = length / 2;
 
-    vector<T> b(mid);
+    vector <T> b(mid);
     for (size_t k = 0; k < b.size(); k++)
         b[k] = a[k];
 
-    vector<T> c(length - mid);
+    vector <T> c(length - mid);
     for (size_t k = 0; k < c.size(); k++)
         c[k] = a[mid + k];
 

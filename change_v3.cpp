@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 
@@ -40,26 +40,25 @@ public:
         return getReminder(change) == 0;
     }
 
-    bool operator ==(const Node &other) const {
+    bool operator==(const Node &other) const {
         return bills_ == other.bills_;
     }
 };
 
 namespace std {
-template<>
-struct hash<Node> {
-public:
-    size_t operator()(const Node &node) const
-    {
-        size_t h1 = 0;
+    template<>
+    struct hash<Node> {
+    public:
+        size_t operator()(const Node &node) const {
+            size_t h1 = 0;
 
-        for (auto it = node.getBills().begin(); it != node.getBills().end(); ++it) {
-            h1 = h1 ^ (it->first << it->second);
+            for (auto it = node.getBills().begin(); it != node.getBills().end(); ++it) {
+                h1 = h1 ^ (it->first << it->second);
+            }
+
+            return h1;
         }
-
-        return h1;
-    }
-};
+    };
 }
 
 class Progress {
@@ -68,25 +67,25 @@ class Progress {
 public:
     void step() {
         switch (curr_) {
-        case '\\':
-            curr_ = '|';
-            break;
-        case '|':
-            curr_ = '/';
-            break;
-        case '/':
-            curr_ = '-';
-            break;
-        case '-':
-            curr_ = '\\';
-            break;
+            case '\\':
+                curr_ = '|';
+                break;
+            case '|':
+                curr_ = '/';
+                break;
+            case '/':
+                curr_ = '-';
+                break;
+            case '-':
+                curr_ = '\\';
+                break;
         }
         cout << curr_ << char(8);
     }
 
 };
 
-typedef unordered_set<Node> Solutions;
+typedef unordered_set <Node> Solutions;
 
 Progress indicator;
 

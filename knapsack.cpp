@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <fstream>
@@ -16,8 +16,8 @@ struct item {
     int weight;
 };
 
-typedef vector<item> item_list;
-typedef vector<vector<int>> result_table;
+typedef vector <item> item_list;
+typedef vector <vector<int>> result_table;
 
 class knapsack {
 
@@ -55,7 +55,7 @@ public:
         return _knapsack[1][_capacity];
     }
 
-    friend istream& operator>>(istream& is, knapsack& k) {
+    friend istream &operator>>(istream &is, knapsack &k) {
 
         string line;
         getline(is, line);
@@ -82,12 +82,13 @@ public:
     }
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
     knapsack k;
 
     if (argc > 1) {
-        ifstream ifs(argv[1], istream::in); ifs >> k;
+        ifstream ifs(argv[1], istream::in);
+        ifs >> k;
     }
 
     cout << k.find_best_pack() << '\n';

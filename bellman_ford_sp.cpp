@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 
@@ -40,7 +40,7 @@ public:
 };
 
 typedef set<int> vertice_list;
-typedef list<edge> edge_list;
+typedef list <edge> edge_list;
 
 class graph {
 
@@ -49,7 +49,7 @@ class graph {
 
 public:
 
-    const edge_list& edges() const {
+    const edge_list &edges() const {
         return _edges;
     }
 
@@ -57,7 +57,7 @@ public:
         return _vertices;
     }
 
-    friend istream& operator>>(istream& is, graph& g) {
+    friend istream &operator>>(istream &is, graph &g) {
 
         string line;
         getline(is, line);
@@ -141,12 +141,13 @@ public:
     }
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
     graph g;
 
     if (argc > 1) {
-        ifstream ifs(argv[1], istream::in); ifs >> g;
+        ifstream ifs(argv[1], istream::in);
+        ifs >> g;
     }
 
     cout << "n: " << g.vertices().size() << '\n';

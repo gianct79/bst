@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <vector>
@@ -40,15 +40,15 @@ public:
         return list.size();
     }
 
-    friend ostream& operator <<(ostream &out, const vector_sum &sum) {
+    friend ostream &operator<<(ostream &out, const vector_sum &sum) {
         copy(sum.list.begin(), sum.list.end(),
-            ostream_iterator<int>(out, ", "));
+             ostream_iterator<int>(out, ", "));
         return out;
     }
 };
 
 void computeSum(const int_vector &list, const int &X,
-    int_vector::iterator st, vector_sum &sum) {
+                int_vector::iterator st, vector_sum &sum) {
 
     if (sum.size() == sum.QTY) {
         if (sum.sum() == X) {
@@ -96,4 +96,3 @@ int main() {
 
     return 0;
 }
-

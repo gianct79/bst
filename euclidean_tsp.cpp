@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 
@@ -51,13 +51,13 @@ public:
         return _weight;
     }
 
-    friend bool operator < (const edge& lhs, const edge& rhs) {
+    friend bool operator<(const edge &lhs, const edge &rhs) {
         return lhs.weight() < rhs.weight();
     }
 };
 
 typedef set<int> vertice_list;
-typedef list<edge> edge_list;
+typedef list <edge> edge_list;
 typedef map<int, edge_list> adj_list;
 
 class undirected_graph {
@@ -68,7 +68,7 @@ class undirected_graph {
 
 public:
 
-    const edge_list& edges() const {
+    const edge_list &edges() const {
         return _edges;
     }
 
@@ -76,7 +76,7 @@ public:
         return _vertices;
     }
 
-    const edge_list& adj(const int &v) const {
+    const edge_list &adj(const int &v) const {
         return _adj.at(v);
     }
 
@@ -92,12 +92,12 @@ public:
         return weight;
     }
 
-    friend istream& operator>>(istream& is, undirected_graph& g) {
+    friend istream &operator>>(istream &is, undirected_graph &g) {
 
         string line;
         getline(is, line);
 
-        vector<pair<float, float>> city_list;
+        vector <pair<float, float>> city_list;
 
         while (getline(is, line)) {
 
@@ -117,7 +117,7 @@ public:
             for (auto j = 0; j < city_list.size(); ++j) {
 
                 if (i == j)
-                  continue;
+                    continue;
 
                 auto &x = city_list[i];
                 auto &y = city_list[j];
@@ -142,7 +142,7 @@ public:
 class lazy_prim_mst {
 
     typedef map<int, bool> visited_map;
-    typedef priority_queue<edge> min_queue;
+    typedef priority_queue <edge> min_queue;
 
     const undirected_graph _g;
 
@@ -166,7 +166,8 @@ public:
         visit(0);
 
         while (!_min.empty()) {
-            edge e = _min.top(); _min.pop();
+            edge e = _min.top();
+            _min.pop();
 
             int v = e.either();
             int w = e.other(v);
@@ -209,7 +210,8 @@ public:
 
         while (!to_visit.empty()) {
 
-            int top = to_visit.top(); to_visit.pop();
+            int top = to_visit.top();
+            to_visit.pop();
             visited[top] = true;
 
             ham_tour.push_back(top);
@@ -234,12 +236,13 @@ public:
 
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
     undirected_graph g;
 
     if (argc > 1) {
-        ifstream ifs(argv[1], istream::in); ifs >> g;
+        ifstream ifs(argv[1], istream::in);
+        ifs >> g;
     }
 
     lazy_prim_mst mst(g);

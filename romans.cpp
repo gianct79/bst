@@ -1,14 +1,14 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <sstream>
 #include <map>
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
-    std::map<int, char*> romanDict;
+    std::map<int, char *> romanDict;
 
     romanDict[1] = "I";
     romanDict[4] = "IV";
@@ -25,33 +25,22 @@ int main(int argc, char* argv[]) {
     romanDict[1000] = "M";
 
     int value;
-
-    std::cout << "enter value : ";
     std::cin >> value;
-
-    std::map<int, size_t> romanValue;
 
     while (value > 0) {
 
+        std::cout << value << ": ";
+        std::stringstream ss;
+
         for (auto it = romanDict.rbegin(); it != romanDict.rend(); ++it) {
 
-            romanValue[it->first] = value / it->first;
+            for (size_t r = value / it->first; r > 0; --r)
+                ss << romanDict[it->first];
+
             value = value % it->first;
         }
 
-        std::stringstream ss;
-
-        for (auto it = romanValue.rbegin(); it != romanValue.rend(); ++it) {
-
-            for (size_t i = 0; i < it->second; ++i)
-                ss << romanDict[it->first];
-        }
-
-        std::cout << "roman value : " << ss.str() << std::endl;
-
-        std::cout << "enter value : ";
+        std::cout << ss.str() << std::endl;
         std::cin >> value;
-
-        romanValue.clear();
     }
 }

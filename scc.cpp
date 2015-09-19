@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <fstream>
@@ -17,7 +17,7 @@ using namespace std;
 class scc_kosaraju {
 
     typedef vector<int> matrix_row;
-    typedef vector<matrix_row> matrix;
+    typedef vector <matrix_row> matrix;
 
     matrix _data;
     matrix _rev_data;
@@ -43,15 +43,15 @@ public:
         return n;
     }
 
-    friend istream& operator>>(istream& is, scc_kosaraju& g) {
+    friend istream &operator>>(istream &is, scc_kosaraju &g) {
 
         int k, v;
 
         while (is >> k) {
 
             is >> v;
-            g._data[k-1].push_back(v-1);
-            g._rev_data[v-1].push_back(k-1);
+            g._data[k - 1].push_back(v - 1);
+            g._rev_data[v - 1].push_back(k - 1);
         }
 
         return is;
@@ -93,7 +93,7 @@ public:
         vector<int> order;
         vector<int> leader(_v_max);
 
-        for (int s = 0, i = _v_max-1; i >= 0; --i) {
+        for (int s = 0, i = _v_max - 1; i >= 0; --i) {
 
             if (!used[i]) {
                 s = i;
@@ -120,8 +120,8 @@ public:
         vector<int> stat(_v_max);
         int p = 0;
         for (int i = 0; i < _v_max - 1; ++i) {
-        
-            if (leader[i] != leader[i+1]) {
+
+            if (leader[i] != leader[i + 1]) {
                 stat.push_back(i - p + 1);
                 p = i + 1;
             }
@@ -136,7 +136,7 @@ public:
         for (int i = 0; i < scc_idx.size(); i++) {
             scc_count[i] = i;
         }
-        
+
 
         sort(scc_count2.begin(), scc_count2.end(), greater<int>());
 
@@ -148,7 +148,7 @@ public:
     }
 };
 
-int main(int argc, char* argv []) {
+int main(int argc, char *argv[]) {
 
     cout << "enter max vertex: ";
 
@@ -158,7 +158,8 @@ int main(int argc, char* argv []) {
     scc_kosaraju g(k);
 
     if (argc > 1) {
-        ifstream ifs(argv[1], istream::in); ifs >> g;
+        ifstream ifs(argv[1], istream::in);
+        ifs >> g;
     }
 
     cout << "max vertex : " << g.get_max_vertice() << '\n';

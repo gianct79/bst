@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <fstream>
@@ -10,10 +10,10 @@
 
 using namespace std;
 
-template <class T>
+template<class T>
 class quick_sort {
 
-    static size_t pivot(const vector<T> &v, size_t lo, size_t hi) {
+    static size_t pivot(const vector <T> &v, size_t lo, size_t hi) {
         //return lo;
         //return hi - 1;
 
@@ -49,7 +49,7 @@ class quick_sort {
         //    return c;
     }
 
-    static size_t partition(vector<T> &a, size_t lo, size_t hi) {
+    static size_t partition(vector <T> &a, size_t lo, size_t hi) {
 
         size_t k = pivot(a, lo, hi);
         size_t i = lo + 1;
@@ -66,7 +66,7 @@ class quick_sort {
         return i - 1;
     }
 
-    static size_t sort(vector<T> &a, size_t lo, size_t hi) {
+    static size_t sort(vector <T> &a, size_t lo, size_t hi) {
 
         if (hi <= lo)
             return 0;
@@ -82,7 +82,7 @@ class quick_sort {
     }
 
 public:
-    static size_t sort(vector<T> &a) {
+    static size_t sort(vector <T> &a) {
         return sort(a, 0, a.size());
     }
 };

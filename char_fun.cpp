@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <stack>
@@ -12,7 +12,7 @@ using namespace std;
 
 string reverse(const string &src) {
 
-    stack<string> heap;
+    stack <string> heap;
 
     string temp;
     for (auto it = src.begin(); it != src.end(); ++it) {
@@ -36,7 +36,7 @@ size_t countWords(const string &src) {
 
     size_t cnt = 0;
     string temp;
-    
+
     for (auto it = src.begin(); it != src.end(); ++it) {
         if (isspace(*it)) {
             if (temp.length() > 0) {
@@ -50,7 +50,7 @@ size_t countWords(const string &src) {
     if (temp.length() > 0) {
         cnt++;
     }
-    
+
     return cnt;
 }
 
@@ -90,12 +90,13 @@ char *removeChars(char *src, const char c) {
     char *w = src;
     for (char *r = src; r && *r; r++) {
         if (c == *r)
-        continue;
-        *w = *r; w++;
+            continue;
+        *w = *r;
+        w++;
     }
 
     if (w) {
-    *w = '\0';
+        *w = '\0';
     }
 
     return s;
@@ -132,7 +133,7 @@ int main() {
     strcpy(stuff, "");
     cout << removeChars(stuff, ' ') << endl;
 
-    delete [] stuff;
+    delete[] stuff;
 
     cout << removeChars(nullptr, '*') << endl;
 

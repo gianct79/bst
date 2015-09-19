@@ -1,5 +1,5 @@
 /*
- * Copyleft 1979-2013 GTO Inc. All rights reversed.
+ * Copyleft GTO Inc. All rights reversed.
  */
 
 #include <iostream>
@@ -10,12 +10,12 @@
 
 using namespace std;
 
-template <class T>
+template<class T>
 class merge_sort {
 
-    static vector<T> aux;
+    static vector <T> aux;
 
-    void static merge(vector<T> &a, size_t lo, size_t mid, size_t hi) {
+    void static merge(vector <T> &a, size_t lo, size_t mid, size_t hi) {
 
         size_t i = lo;
         size_t j = mid + 1;
@@ -35,7 +35,7 @@ class merge_sort {
         }
     }
 
-    void static sort(vector<T> &a, size_t lo, size_t hi) {
+    void static sort(vector <T> &a, size_t lo, size_t hi) {
 
         if (hi <= lo)
             return;
@@ -49,15 +49,15 @@ class merge_sort {
 
 public:
 
-    void static sort(vector<T> &a) {
+    void static sort(vector <T> &a) {
 
         aux = vector<T>(a.size());
         sort(a, 0, a.size() - 1);
     }
 };
 
-template <class T>
-vector<T> merge_sort<T>::aux;
+template<class T>
+vector <T> merge_sort<T>::aux;
 
 int main(int argc, char **argv) {
 

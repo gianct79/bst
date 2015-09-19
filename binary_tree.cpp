@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 
@@ -11,182 +11,182 @@ using namespace std;
 
 namespace gtlib {
 
-template <class T>
-class binary_tree {
+    template<class T>
+    class binary_tree {
 
-    struct Node {
-        Node(const T &value, Node* left = nullptr, Node* right = nullptr) : value(value), left(left), right(right) {
+        struct Node {
+            Node(const T &value, Node *left = nullptr, Node *right = nullptr) : value(value), left(left), right(right) {
+            }
+
+            const T value;
+            Node *left;
+            Node *right;
+        };
+
+        Node *root_;
+
+    public:
+        binary_tree() : root_(nullptr) {
         }
 
-        const T value;
-        Node* left;
-        Node* right;
-    };
+        ~binary_tree() {
+            destroy_it(root_);
+        }
 
-    Node *root_;
+        Node *add(const T &v, Node *parent = nullptr) {
 
-public:
-    binary_tree() : root_(nullptr) {
-    }
+            if (!parent) {
+                parent = new Node(v);
+                if (!root_) {
+                    root_ = parent;
+                }
+            } else if (v < parent->value) {
+                parent->left = add(v, parent->left);
+            } else if (v > parent->value) {
+                parent->right = add(v, parent->right);
+            }
 
-    ~binary_tree() {
-        destroy_it(root_);
-    }
+            return parent;
+        }
 
-    Node *add(const T& v, Node *parent = nullptr) {
+        Node *add_it(const T &v, Node *parent = nullptr) {
 
-        if (!parent) {
-            parent = new Node(v);
+            Node *tmp = parent;
+            Node *prev = nullptr;
+
+            while (tmp) {
+                prev = tmp;
+                if (v < tmp->value) {
+                    tmp = tmp->left;
+                } else {
+                    tmp = tmp->right;
+                }
+            }
+
+            tmp = new Node(v);
+
             if (!root_) {
-                root_ = parent;
-            }           
-        } else if (v < parent->value) {
-            parent->left = add(v, parent->left);
-        } else if (v > parent->value) {
-            parent->right = add(v, parent->right);
+                root_ = tmp;
+            } else if (v < prev->value) {
+                prev->left = tmp;
+            } else if (v > prev->value) {
+                prev->right = tmp;
+            }
+            return tmp;
         }
 
-        return parent;
-    }
-
-    Node *add_it(const T& v, Node *parent = nullptr) {
-
-        Node *tmp = parent;
-        Node *prev = nullptr;
-
-        while (tmp) {
-            prev = tmp;
-            if (v < tmp->value) {
-                tmp = tmp->left;
+        bool search(const T &v, Node *parent = nullptr) {
+            if (parent == nullptr) {
+                return false;
+            } else if (v < parent->value) {
+                return search(v, parent->left);
+            } else if (v > parent->value) {
+                return search(v, parent->right);
             } else {
-                tmp = tmp->right;
+                return true;
             }
         }
 
-        tmp = new Node(v);
+        bool search_it(const T &v, Node *parent = nullptr) {
 
-        if (!root_) {
-            root_ = tmp;
-        } else if (v < prev->value) {
-            prev->left = tmp;
-        } else if (v > prev->value) {
-            prev->right = tmp;
-        }
-        return tmp;
-    }
+            stack < Node * > tovisit;
+            tovisit.push(parent);
 
-    bool search(const T& v, Node *parent = nullptr) {
-        if (parent == nullptr) {
+            while (tovisit.size() > 0) {
+
+                const Node *curr = tovisit.top();
+                tovisit.pop();
+
+                if (curr) {
+
+                    tovisit.push(curr->left);
+                    tovisit.push(curr->right);
+
+                    if (curr->value == v) {
+                        return true;
+                    }
+                }
+
+            }
+
             return false;
-        } else if (v < parent->value) {
-            return search(v, parent->left);
-        } else if (v > parent->value) {
-            return search(v, parent->right);
-        } else {
-            return true;
-        }
-    }
-
-    bool search_it(const T& v, Node *parent = nullptr) {
-
-        stack<Node*> tovisit;
-        tovisit.push(parent);
-
-        while (tovisit.size() > 0) {
-
-            const Node *curr = tovisit.top();
-            tovisit.pop();
-
-            if (curr) {
-
-                tovisit.push(curr->left);
-                tovisit.push(curr->right);
-
-                if (curr->value == v) {
-                    return true;
-                }
-            }
-        
         }
 
-        return false;
-    }
+        void destroy(Node *parent) {
+            if (parent) {
+                destroy(parent->left);
+                destroy(parent->right);
 
-    void destroy(Node *parent) {
-        if (parent) {
-            destroy(parent->left);
-            destroy(parent->right);
-
-            delete parent;
-        }
-    }
-
-    void destroy_it(Node *parent) {
-
-        stack<Node*> tovisit;
-        tovisit.push(parent);
-
-        while (tovisit.size() > 0) {
-
-            Node *curr = tovisit.top();
-            tovisit.pop();
-
-            if (curr) {
-            
-                tovisit.push(curr->left);
-                tovisit.push(curr->right);
-
-                delete curr;
+                delete parent;
             }
         }
-    }
 
-    size_t get_height(Node *parent = nullptr) {
-        if (!parent) {
-            return 0;
-        } else {
-            return 1 + max(get_height(parent->left), get_height(parent->right));
-        }
-    }
+        void destroy_it(Node *parent) {
 
-    size_t get_height_it(Node *parent = nullptr) {
+            stack < Node * > tovisit;
+            tovisit.push(parent);
 
-        size_t height = 0;
+            while (tovisit.size() > 0) {
 
-        queue<Node*> visited;
-        visited.push(parent);
-        visited.push(nullptr);
+                Node *curr = tovisit.top();
+                tovisit.pop();
 
-        while (Node *f = visited.front()) {
-            visited.pop();
-            if (f->left) {
-                visited.push(f->left);
-                } 
-                if (f->right) {
-                visited.push(f->right);
+                if (curr) {
+
+                    tovisit.push(curr->left);
+                    tovisit.push(curr->right);
+
+                    delete curr;
                 }
-            if (!visited.front()) {
+            }
+        }
+
+        size_t get_height(Node *parent = nullptr) {
+            if (!parent) {
+                return 0;
+            } else {
+                return 1 + max(get_height(parent->left), get_height(parent->right));
+            }
+        }
+
+        size_t get_height_it(Node *parent = nullptr) {
+
+            size_t height = 0;
+
+            queue < Node * > visited;
+            visited.push(parent);
+            visited.push(nullptr);
+
+            while (Node *f = visited.front()) {
                 visited.pop();
-                visited.push(nullptr);
-                height++;
+                if (f->left) {
+                    visited.push(f->left);
+                }
+                if (f->right) {
+                    visited.push(f->right);
+                }
+                if (!visited.front()) {
+                    visited.pop();
+                    visited.push(nullptr);
+                    height++;
+                }
             }
-        }
 
-        return height;
-    }
-};
+            return height;
+        }
+    };
 
 }
 
-template <typename node_type, typename output_type>
-void print_binary_tree(output_type& out, node_type* n, size_t depth = 0, char connector = '+') {
-    if(!n) {
+template<typename node_type, typename output_type>
+void print_binary_tree(output_type &out, node_type *n, size_t depth = 0, char connector = '+') {
+    if (!n) {
         return;
     }
- 
+
     print_binary_tree(out, n->right, depth + 1, '/');
- 
-    for(int i = depth; i--; ) {
+
+    for (int i = depth; i--;) {
         out << "    ";
     }
     out << ' ' << connector << "--" << n->value << endl;

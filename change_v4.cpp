@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <unordered_map>
@@ -54,18 +54,18 @@ class Progress {
 public:
     void step() {
         switch (curr_) {
-        case '\\':
-            curr_ = '|';
-            break;
-        case '|':
-            curr_ = '/';
-            break;
-        case '/':
-            curr_ = '-';
-            break;
-        case '-':
-            curr_ = '\\';
-            break;
+            case '\\':
+                curr_ = '|';
+                break;
+            case '|':
+                curr_ = '/';
+                break;
+            case '/':
+                curr_ = '-';
+                break;
+            case '-':
+                curr_ = '\\';
+                break;
         }
         cout << curr_ << char(8);
     }

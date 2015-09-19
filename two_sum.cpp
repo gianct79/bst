@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <fstream>
@@ -20,7 +20,7 @@ public:
     two_sum_bst(const vector<long> &a) : _a(a.begin(), a.end()), _cnt(0) {
         auto last = unique(_a.begin(), _a.end());
         _a.erase(last + 1, _a.end());
-        sort(_a.begin(), _a.end());        
+        sort(_a.begin(), _a.end());
     }
 
     size_t count(const long &sum) {
@@ -30,7 +30,8 @@ public:
             long s = _a[l] + _a[r];
             if (s == sum) {
                 //cout << _a[l] << '+' << _a[r] << '=' << s << '\n'; 
-                _cnt++; break;
+                _cnt++;
+                break;
             } else if (s < sum) {
                 l++;
             } else {
@@ -43,7 +44,7 @@ public:
     size_t get_count() const { return _cnt; }
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
     vector<long> list;
 

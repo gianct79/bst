@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <fstream>
@@ -21,15 +21,17 @@ public:
     }
 
     int weight() const { return w_; }
+
     int length() const { return l_; }
 
     int diff() const { return w_ - l_; }
+
     float ratio() const { return w_ / float(l_); }
 };
 
 class job_scheduler {
 
-    typedef vector<job> job_list;
+    typedef vector <job> job_list;
     job_list jobs_;
 
     int64_t weighted_sum(const job_list &jobs) const {
@@ -73,7 +75,7 @@ public:
         return weighted_sum(copy);
     }
 
-    friend istream& operator>>(istream& is, job_scheduler& list) {
+    friend istream &operator>>(istream &is, job_scheduler &list) {
 
         string line;
         getline(is, line);
@@ -94,12 +96,13 @@ public:
     }
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
     job_scheduler scheduler;
 
     if (argc > 1) {
-        ifstream ifs(argv[1], istream::in); ifs >> scheduler;
+        ifstream ifs(argv[1], istream::in);
+        ifs >> scheduler;
     }
 
     cout << "job count: " << scheduler.jobs().size() << '\n';

@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <fstream>
@@ -42,25 +42,27 @@ public:
         return _weight;
     }
 
-    friend bool operator < (const edge& lhs, const edge& rhs) {
+    friend bool operator<(const edge &lhs, const edge &rhs) {
         return lhs.weight() > rhs.weight();
     }
 };
 
-typedef list<edge> edge_list;
+typedef list <edge> edge_list;
 typedef list<unsigned> vertex_list;
-typedef queue<edge> edge_queue;
-typedef priority_queue<edge> min_queue;
+typedef queue <edge> edge_queue;
+typedef priority_queue <edge> min_queue;
 
-typedef list<bitset<24>> bit_list;
+typedef list <bitset<24>> bit_list;
 
 void generate_bits(bit_list &bitlist, const size_t &pos) {
 
     bit_list::value_type bits("1");
-    bits.set(pos); bitlist.push_back(bits);
+    bits.set(pos);
+    bitlist.push_back(bits);
 
     for (size_t i = pos; i < bits.size() - 1; ++i) {
-        bits <<= 1; bitlist.push_back(bits);
+        bits <<= 1;
+        bitlist.push_back(bits);
     }
 
     if (pos < bits.size() - 1)
@@ -81,7 +83,7 @@ public:
         return _edges;
     }
 
-    friend istream& operator>>(istream& is, undirected_graph& g) {
+    friend istream &operator>>(istream &is, undirected_graph &g) {
 
         string line;
         getline(is, line);
@@ -107,7 +109,7 @@ public:
         for (auto &n : nodes) {
             for (auto &b : bits) {
 
-                auto &h = n.first ^ b;
+                auto &h = n.first ^b;
                 if (nodes.count(h) > 0) {
 
                     size_t weight = (n.first ^ h).count();
@@ -180,7 +182,8 @@ public:
         size_t v = g.v().size();
 
         while (!pq.empty() && _mst.size() < v - 1) {
-            edge e = pq.top(); pq.pop();
+            edge e = pq.top();
+            pq.pop();
 
             unsigned v = e.either();
             unsigned w = e.other(v);
@@ -196,12 +199,13 @@ public:
     }
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
     undirected_graph g;
 
     if (argc > 1) {
-        ifstream ifs(argv[1], istream::in); ifs >> g;
+        ifstream ifs(argv[1], istream::in);
+        ifs >> g;
     }
 
     kruskal_mst mst(g);

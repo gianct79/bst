@@ -1,14 +1,14 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <array>
 #include <map>
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
-    std::array<int, 4> bills = {100, 50, 10, 1, };
+    std::array<int, 4> bills = {100, 50, 10, 1,};
     int sale, money;
 
     std::cout << "sale value. : ";

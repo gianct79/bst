@@ -1,6 +1,6 @@
 /*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 #include <iostream>
 #include <fstream>
@@ -19,9 +19,9 @@ class int_rand {
     mt19937 _gen;
 
     uniform_int_distribution<> _dist;
-    
+
 public:
-    int_rand(int lo, int hi) : _gen { _rd() }, _dist { lo, hi } {
+    int_rand(int lo, int hi) : _gen{_rd()}, _dist{lo, hi} {
     }
 
     int operator()() {
@@ -29,7 +29,7 @@ public:
     }
 };
 
-template <typename T>
+template<typename T>
 T random_element(T begin, T end) {
 
     const size_t s = distance(begin, end);
@@ -43,8 +43,8 @@ T random_element(T begin, T end) {
 
 class karger_graph {
 
-    typedef list<size_t> matrix_row;
-    typedef map<matrix_row::value_type, matrix_row> matrix;
+    typedef list <size_t> matrix_row;
+    typedef map <matrix_row::value_type, matrix_row> matrix;
 
     matrix _data;
 
@@ -65,7 +65,7 @@ public:
         return n;
     }
 
-    karger_graph& remove_self_loops() {
+    karger_graph &remove_self_loops() {
 
         for (matrix::iterator it = _data.begin(); it != _data.end(); ++it) {
             it->second.remove(it->first);
@@ -74,7 +74,7 @@ public:
         return *this;
     }
 
-    karger_graph& merge_vertices(const size_t &v, const size_t &u) {
+    karger_graph &merge_vertices(const size_t &v, const size_t &u) {
 
         if (v == u)
             return *this;
@@ -97,7 +97,7 @@ public:
         return *this;
     }
 
-    static void random_contraction_algorithm(karger_graph& km) {
+    static void random_contraction_algorithm(karger_graph &km) {
 
         while (km.count_vertices() > 2) {
 
@@ -109,7 +109,7 @@ public:
         }
     }
 
-    friend istream& operator>>(istream& is, karger_graph& km) {
+    friend istream &operator>>(istream &is, karger_graph &km) {
 
         string line;
         while (getline(is, line)) {
@@ -137,12 +137,13 @@ public:
     }
 };
 
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[]) {
 
     karger_graph graph;
 
     if (argc > 1) {
-        ifstream ifs(argv[1], istream::in); ifs >> graph;
+        ifstream ifs(argv[1], istream::in);
+        ifs >> graph;
     }
 
     cout << "vertex count: " << graph.count_vertices() << '\n';
