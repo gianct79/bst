@@ -16,7 +16,7 @@ struct list {
     node *first;
 
     list() {
-        first = 0;
+        first = nullptr;
     }
 
     ~list() {
@@ -37,10 +37,10 @@ struct list {
 
         node *x = new node();
         x->value = v;
-        x->next = 0;
+        x->next = nullptr;
 
 
-        if (tail == 0) {
+        if (tail == nullptr) {
             first = x;
         } else {
             tail->next = x;
@@ -50,7 +50,7 @@ struct list {
 
     node *last() {
 
-        node *prev = 0, *curr = first;
+        node *prev = nullptr, *curr = first;
         while (curr) {
             prev = curr;
             curr = curr->next;
@@ -68,7 +68,7 @@ struct list {
 
     void reverse() {
 
-        node *temp, *prev = 0, *curr = first;
+        node *temp, *prev = nullptr, *curr = first;
 
         while (curr) {
 
@@ -81,9 +81,18 @@ struct list {
         }
 
         first = prev;
-
     }
 
+    node *reverse_r(node *node, node *prev = nullptr) {
+
+        if (!node)
+            return prev;
+
+        auto last = reverse_r(node->next(), node);
+        node->next(prev);
+
+        return last;
+    }
 };
 
 
@@ -98,6 +107,9 @@ int main(int argc, char **argv) {
     l.print();
 
     l.reverse();
+    l.print();
+
+    l.reverse_r(l.last());
     l.print();
 
     return 0;
