@@ -1,5 +1,5 @@
 /*
- * Copyleft GTO Inc. All rights reversed.
+ * Copied from XCAO
  */
 
 #include <iostream>
