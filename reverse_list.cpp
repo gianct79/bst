@@ -83,16 +83,16 @@ struct list {
         first = prev;
     }
 
-    node *reverse_r(node *node, node *prev = nullptr) {
-
-        if (!node)
-            return prev;
-
-        auto last = reverse_r(node->next(), node);
-        node->next(prev);
-
-        return last;
-    }
+//    node *reverse_r(node *curr, node *prev = nullptr) {
+//
+//        if (!curr)
+//            return prev;
+//
+//        auto last = reverse_r(curr->next, curr);
+//        curr->next = prev;
+//
+//        return last;
+//    }
 };
 
 
@@ -103,13 +103,12 @@ int main(int argc, char **argv) {
     l.add(1);
     l.add(2);
     l.add(3);
-
     l.print();
+
+//    l.reverse_r(l.last());
+//    l.print();
 
     l.reverse();
-    l.print();
-
-    l.reverse_r(l.last());
     l.print();
 
     return 0;
