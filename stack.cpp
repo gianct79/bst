@@ -4,57 +4,86 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <memory>
 
-using namespace std;
 
 namespace gtlib {
 
     template<class T>
-    class stack {
+    struct stack {
 
+        typedef T value_type;
+
+    private:
         struct node {
             T value_;
-            node *prev_;
+            node *prev;
 
-            node(const T &v) : value_(v), prev_(nullptr) {
+            node(const T &v) : value_(v), prev(nullptr) {
+            }
+
+            ~node() {
             }
         };
 
-        node *top_;
+        std::unique_ptr<node> top_;
 
     public:
-        stack() : top_(nullptr) {
+        stack() {
         }
 
         ~stack() {
             while (top_) {
-                pop();
+                top_.reset(top_->prev);
+            }
+        }
+
+        stack(std::initializer_list<T> list) : stack() {
+            for (auto &it : list) {
+                push(it);
             }
         }
 
         void push(const T &v) {
             node *n = new node(v);
 
-            if (top_ != nullptr) {
-                n->prev_ = top_;
+            if (top_) {
+                n->prev = top_.release();
             }
 
-            top_ = n;
+            top_.reset(n);
         }
 
         T pop() {
-            if (top_ == nullptr) {
-                throw logic_error("underflow");
+            if (!top_) {
+                throw std::logic_error("underflow");
             }
 
             T v = top_->value_;
 
-            node *t = top_;
-            top_ = top_->prev_;
-
-            delete t;
+            top_.reset(top_->prev);
 
             return v;
+        }
+
+        bool empty() {
+            return (top_ == nullptr);
+        }
+
+        void reverse() {
+
+            node *temp, *prev = nullptr, *curr = top_.release();
+
+            while (curr) {
+
+                temp = curr->prev;
+                curr->prev = prev;
+
+                prev = curr;
+                curr = temp;
+            }
+
+            top_.reset(prev);
         }
     };
 
@@ -62,19 +91,22 @@ namespace gtlib {
 
 int main(int argc, char **argv) {
 
-    gtlib::stack<int> pilha;
+    using int_stack = gtlib::stack<int>;
 
-    try {
-        pilha.push(1);
-        pilha.push(2);
-        pilha.push(3);
-        cout << pilha.pop() << endl;
-        cout << pilha.pop() << endl;
-        cout << pilha.pop() << endl;
-        pilha.push(2);
-        cout << pilha.pop() << endl;
-        cout << pilha.pop() << endl;
-    } catch (exception &e) {
-        cout << e.what() << endl;
-    }
+    int_stack s = {1, 2, 3, 4, 5};
+
+    std::cout << s.pop() << '\n';
+    std::cout << s.pop() << '\n';
+    std::cout << s.pop() << '\n';
+
+    s.push(6);
+    s.push(7);
+    s.push(8);
+
+    s.reverse();
+
+    std::cout << s.pop() << '\n';
+    std::cout << s.pop() << '\n';
+
+    std::cout << std::boolalpha << s.empty() << '\n';
 }
