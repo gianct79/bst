@@ -1,6 +1,6 @@
-﻿/*
-* Copyleft 1979-2013 GTO Inc. All rights reversed.
-*/
+/*
+ * Copyleft GTO Inc. All rights reversed.
+ */
 
 using System.Collections;
 using System.Collections.Generic;
