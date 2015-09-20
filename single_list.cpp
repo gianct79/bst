@@ -5,27 +5,29 @@
 
 #include <iostream>
 #include <stdexcept>
+#include <memory>
 
-#include <cassert>
-
-using namespace std;
 
 namespace gtlib {
 
     template<typename T>
-    class single_list {
+    struct single_list {
 
+        typedef T value_type;
+
+    private:
         struct node {
             T value;
             node *next;
 
-            node(const T &value) : value(value), next(nullptr) { }
+            node(T const &value) : value(value), next(nullptr) {
+            }
         };
 
-        node *first_;
-        node *last_;
+        std::unique_ptr<node> head_;
+        node *tail_;
 
-        struct iterator : public std::iterator<forward_iterator_tag, T> {
+        struct iterator : public std::iterator<std::forward_iterator_tag, T> {
             iterator(node *curr) : curr_(curr) {
             }
 
@@ -50,11 +52,11 @@ namespace gtlib {
                 return &curr_->value;
             }
 
-            bool operator==(const iterator &other) {
+            bool operator==(iterator const &other) {
                 return curr_ == other.curr_;
             }
 
-            bool operator!=(const iterator &other) {
+            bool operator!=(iterator const &other) {
                 return curr_ != other.curr_;
             }
 
@@ -62,112 +64,122 @@ namespace gtlib {
             node *curr_;
         };
 
-    public:
-        single_list() : first_(nullptr), last_(nullptr) {
+        node *reverse_r(node *curr, node *prev = nullptr) {
+
+            if (!curr) {
+                tail_ = prev;
+                return prev;
+            }
+
+            auto last = reverse_r(curr->next, curr);
+            curr->next = prev;
+
+            return last;
         }
 
-        single_list(initializer_list <T> list) {
-            for (auto it = list.begin(); it != list.end(); ++it) {
-                push_tail(*it);
-            }
+    public:
+        single_list() : tail_(nullptr) {
         }
 
         ~single_list() {
-            for (node *curr = first_; curr;) {
-                node *temp = curr;
-                curr = curr->next;
-                delete temp;
+            while (head_) {
+                head_.reset(head_->next);
             }
         }
 
-        void push_tail(const T &value) {
+        single_list(std::initializer_list<T> list) : single_list() {
+            for (auto &it : list) {
+                push_tail(it);
+            }
+        }
+
+        void push_tail(T const &value) {
 
             node *n = new node(value);
 
-            if (!first_)
-                first_ = n;
+            if (!head_)
+                head_.reset(n);
             else
-                last_->next = n;
+                tail_->next = n;
 
-            last_ = n;
+            tail_ = n;
         }
 
         const T pop_head() {
 
-            if (!first_) {
-                throw logic_error("underflow");
+            if (!head_) {
+                throw std::logic_error("underflow");
             }
 
-            T v = first_->value;
+            T v = head_->value;
 
-            node *temp = first_;
-            first_ = first_->next;
+            head_.reset(head_->next);
 
-            delete temp;
-
-            if (!first_) {
-                last_ = first_;
+            if (!head_) {
+                tail_ = nullptr;
             }
 
             return v;
         }
 
-        iterator begin() { return iterator(first_); }
+        void reverse() {
+
+            tail_ = head_.release();
+            node *temp, *prev = nullptr, *curr = tail_;
+
+            while (curr) {
+
+                temp = curr->next;
+                curr->next = prev;
+
+                prev = curr;
+                curr = temp;
+            }
+
+            head_.reset(prev);
+        }
+
+        void reverse_r() {
+            head_.reset(reverse_r(head_.release()));
+        }
+
+        iterator begin() { return iterator(head_.get()); }
 
         iterator end() { return iterator(nullptr); }
     };
 
-}
-
-template<typename TActual, typename TExpected>
-void assert_equal(TActual &actual, TExpected &expected) {
-    auto a = actual.begin();
-    for (auto i = expected.begin(); i != expected.end(); ++i) {
-        assert(a != actual.end());
-        assert(*i == *a);
-        ++a;
+    template<typename T>
+    std::ostream &operator<<(std::ostream &out, single_list<T> &list) {
+        for (auto &it : list)
+            out << it << ' ';
+        return out;
     }
-    assert(a == actual.end());
 }
 
 
 int main() {
 
-    gtlib::single_list<int> l;
+    using int_list = gtlib::single_list<int>;
 
-    for (auto it = l.begin(); it != l.end(); ++it) {
-        cout << *it << endl;
-    }
+    int_list l = {1, 2, 3};
+    std::cout << l << '\n';
 
-    l.push_tail(1);
-    l.push_tail(2);
-    l.push_tail(5);
-
-    gtlib::single_list<int> h;
-    h.push_tail(1);
-    h.push_tail(2);
-    h.push_tail(5);
-    //h.push_tail(6);
-
-    //assert_equal(l, h);
-
-    //gtlib::single_list<int> j = {1, 2, 5};
-
-    //assert_equal(j, l);
-
-    for (auto it = l.begin(); it != l.end(); ++it) {
-        cout << *it << endl;
-    }
+    l.reverse();
+    std::cout << l << '\n';
 
     l.pop_head();
+    l.pop_head();
+    l.pop_head();
 
-    l.push_tail(40);
-    l.push_tail(20);
-    l.push_tail(30);
+    int_list::value_type v;
+    while (std::cin >> v)
+        l.push_tail(v);
 
-    for (auto it = l.begin(); it != l.end(); ++it) {
-        cout << *it << endl;
-    }
+    std::cout << l << '\n';
+
+    l.reverse_r();
+    std::cout << l << '\n';
 
     return 0;
 }
+
