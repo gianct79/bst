@@ -129,14 +129,8 @@ int main() {
     while (std::cin >> x >> w >> h) {
         input.push_back({x, x + w, h});
     }
-    //input.push_back({2, 5, 2});
-    //input.push_back({1, 6, 1});
-    //input.push_back({3, 4, 4});
-    //input.push_back({1, 6, 3});
-
 
     std::cout << input << '\n';
-
     std::cout << perimeter(input) << '\n';
 
     return 0;
