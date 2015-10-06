@@ -21,7 +21,6 @@ unsigned substr(char *str, unsigned pos, unsigned len) {
 	return w - str;
 }
 
-
 unsigned substr_i(char *str, unsigned pos, unsigned len) {
 	unsigned w = pos;
 	unsigned r = w + len;
