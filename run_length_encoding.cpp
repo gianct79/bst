@@ -6,36 +6,68 @@
 #include <sstream>
 #include <fstream>
 
-void run_length_encoding(std::istream &stream) {
-    if (stream) {
-        size_t count = 1;
 
-        auto read = stream.get();
-
-        while (stream) {
-            auto next = stream.get();
-
-            if (next != read && next != -1) {
-                std::cout << count << ' ' << read << ", ";
+void encode(std::istream &in, std::ostream &out) {
+    char read;
+    if (in.get(read)) {
+        unsigned count = 1;
+        char next;
+        while (in.get(next)) {
+            if (next != read) {
+                out << count << read;
                 read = next;
                 count = 1;
             } else {
                 count++;
             }
         }
+        out << count << read;
+    }
+}
 
-        std::cout << count << ' ' << read << '\n';
+void decode(std::istream &in, std::ostream &out) {
+    char read;
+    unsigned count;
+    while (in >> count >> read) {
+        while (count--) {
+            out << read;
+        }
     }
 }
 
 
 int main() {
 
-    std::stringstream ss{"aaabcccdddddeeeeffgghhhiiijjjkk"};
-    run_length_encoding(ss);
+    {
+        std::stringstream in{"abbcccddddeeeeeffffggghhi"};
+        std::stringstream out{""};
+    
+        encode(in, out);
+        std::cout << out.str() << '\n';
+    
+        decode(out, in);
+        std::cout << in.str() << '\n';
+    }
 
-    while (std::cin)
-        run_length_encoding(std::cin);
+    {
+        std::stringstream in{"a12b1b1c2c3c4d1d23d"};
+        std::stringstream out{""};
+    
+        encode(in, out);
+        std::cout << out.str() << '\n';
+    
+        decode(out, in);
+        std::cout << in.str() << '\n';
+    }
+
+    while (std::cin) {
+        std::stringstream buf;
+
+        encode(std::cin, buf);
+        std::cout << buf.str() << '\n';
+
+        decode(buf, std::cout);
+    }
 
     return 0;
 }
