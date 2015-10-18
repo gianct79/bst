@@ -1,12 +1,14 @@
 #include <iostream>
 #include <vector>
+#include <stack>
 #include <unordered_set>
 
 
 void find_friends(std::vector<std::string> const &friends,
-    std::unordered_set<int> &visited, int i) {
+    std::unordered_set<int> &visited, int i)
+{
     visited.insert(i);
-    for (int j = i; j < friends[i].size(); ++j) {
+    for (int j = 0; j < friends[i].size(); ++j) {
         if (!visited.count(j) && friends[i][j] == 'Y') {
             find_friends(friends, visited, j);
         }
@@ -25,20 +27,71 @@ int friend_circles(std::vector<std::string> const &friends) {
     return circles;
 }
 
+int friend_circles_it(std::vector<std::string> const &friends) {
+    int circles = 0;
+    std::unordered_set<int> visited;
+    std::stack<int> to_visit;
+    for (int i = 0; i < friends.size(); ++i) {
+        if (!visited.count(i)) {
+            circles++;
+            to_visit.push(i);
+            while (!to_visit.empty()) {
+                int v = to_visit.top();
+                to_visit.pop();
+                visited.insert(v);
+                for (int j = 0; j < friends[v].size(); ++j) {
+                    if (!visited.count(j) && friends[v][j] == 'Y')
+                        to_visit.push(j);
+                }
+            }
+        }
+    }
+    return circles;
+}
+
+#define TEST(Expected, ...) \
+  friends = { __VA_ARGS__ }; \
+  result = friend_circles_it(friends); \
+  std::cout << "expected: " << Expected << ", actual: " << result << " - " << (Expected == result ? "correct" : "WRONG") << std::endl
 
 int main() {
-    std::vector<std::string> friends { "YYNY", "YYNN", "NNYN", "YNNY" };
-    std::cout << friend_circles(friends) << '\n';
+    std::vector<std::string> friends;
+    int result;
 
-    friends = { "YYYY", "YYYY", "YYYY", "YYYY" };
-    std::cout << friend_circles(friends) << '\n';
+    TEST(2, "YYNY", "YYNN", "NNYN", "YNNY");
+    TEST(1, "YYYY", "YYYY", "YYYY", "YYYY");
+    TEST(0);
+	TEST(1, "Y");
+    TEST(2,
+      "YYNY",
+      "YYNN",
+      "NNYN",
+      "YNNY"
+    );
+	TEST(2,
+	  "YNYNNY",
+	  "NYYNNN",
+	  "YYYNNY",
+	  "NNNYYN",
+	  "NNNYYN",
+	  "YNYNNY",
+	);
+	TEST(3,
+	  "YNYNNY",
+	  "NYNNNN",
+	  "YNYNNY",
+	  "NNNYYN",
+	  "NNNYYN",
+	  "YNYNNY",
+	);
+	TEST(6,
+	  "YNNNNN",
+	  "NYNNNN",
+	  "NNYNNN",
+	  "NNNYNN",
+	  "NNNNYN",
+	  "NNNNNY",
+	);
 
-    friends = { "NNNN", "NNNN", "NNNN", "NNNN" };
-    std::cout << friend_circles(friends) << '\n';
-
-    friends = { "", "", "" };
-    std::cout << friend_circles(friends) << '\n';
-
-    friends = {};
-    std::cout << friend_circles(friends) << '\n';
+    return 0;
 }
