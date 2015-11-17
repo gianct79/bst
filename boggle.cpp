@@ -71,7 +71,7 @@ using visited_set = set<board_pos>;
 using word_set = set<string>;
 
 void solve_boggle(prefix_tree::node *root, boggle_board const &board,
-    board_pos const &pos, word_set &words, visited_set visited, string word)
+    board_pos const &pos, word_set &words, visited_set &visited, string word)
 {
     if (!root || visited.count(pos))
         return;
