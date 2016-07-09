@@ -5,17 +5,25 @@
 #include <iostream>
 #include <array>
 
+using namespace std;
 
 template<typename T, std::size_t m>
 struct matrix {
 
     void rotate() {
-
+        // transpose matrix
         for (auto i = 0; i < _data.size(); ++i) {
             for (auto j = i + 1; j < _data.size(); ++j) {
-                std::swap(_data[i][j], _data[j][i]);
+                swap(_data[i][j], _data[j][i]);
             }
         }
+        // change columns to rotate right
+        for (auto i = 0; i < _data.size(); ++i) {
+            for (auto j = 0 ; j < _data.size() / 2; ++j) {
+                swap(_data[i][j], _data[i][_data.size() - j - 1]);
+    	    }
+        }
+        // change rows to rotate left
     }
 
     std::array <std::array<T, m>, m> _data;
@@ -26,9 +34,9 @@ std::ostream &operator<<(std::ostream &out, matrix<T, m> &a) {
 
     for (auto i = 0; i < a._data.size(); ++i) {
         for (auto j = 0; j < a._data[i].size(); ++j) {
-            std::cout << a._data[i][j] << " ";
+            out << a._data[i][j] << " ";
         }
-        std::cout << "\n";
+        out << '\n';
     }
 
     return out;
@@ -42,10 +50,10 @@ int main() {
             " 9", "10", "11", "12",
             "13", "14", "15", "16"};
 
-    std::cout << a << "\n";
+    cout << a << "\n";
 
     a.rotate();
-    std::cout << a << "\n";
+    cout << a << "\n";
 
     return 0;
 }
