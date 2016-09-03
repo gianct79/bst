@@ -1,56 +1,60 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <functional>
 
 using namespace std;
 
-template <class T>
-struct k_largest {
+template <typename T, typename U = std::less<T>>
+struct k_elements {
+    unsigned k_;
+    vector<T> v_;
+    U u_ = U();
 
-	vector<T> v_;
-	int k_;
+    typedef typename vector<T>::const_iterator const_iterator;
 
-	typedef typename vector<T>::const_iterator const_iterator;
-
-	k_largest(int k) : k_(k), v_(k) {
-	}
-
-	void push(T const &v) {
-		const_iterator it;
-		if (v_.empty() || v_.size() < k_) {
-			auto it = upper_bound(v_.begin(), v_.end(), v);
-			v_.insert(it, v);
-		} else {
-			auto it = v_.begin();
-			if (v > *it) {
-				v_.erase(it);
-				it = upper_bound(v_.begin(), v_.end(), v);
-				v_.insert(it, v);
-			}
-		}
-		
+    k_elements(int k) : k_(k) {
     }
 
- 	const_iterator begin() const { return v_.begin(); }; 
+    void push(T const &v) {
+        if (v_.size() < k_) {
+            v_.insert(upper_bound(v_.begin(), v_.end(), v, u_), v);
+        } else {
+            auto it = v_.begin();
+            if (!u_(v, *it)) {
+                v_.erase(it);
+                v_.insert(upper_bound(v_.begin(), v_.end(), v, u_), v);
+            }
+        }
+    }
+
+    const_iterator begin() const { return v_.begin(); }; 
     const_iterator end() const { return v_.end(); }
 };
 
 int main() {
-	int t;
-	cin >> t;
-	while (t--) {
+    int t;
+    cin >> t;
+    while (t--) {
         int n, k;
         cin >> n >> k;
-        k_largest<int> v(k);
+        k_elements<int> max(k);
+        k_elements<int, std::greater<int>> min(k);
         while (n--) {
             int c;
             cin >> c;
-            v.push(c);
+            max.push(c);
+            min.push(c);
         }
-        for (auto i : v) {
+        cout << k << " largest elements : ";
+        for (auto &i : max) {
+            cout << i << ' ';
+        }
+        cout << '\n' << k << " smallest elements: ";
+        for (auto &i : min) {
             cout << i << ' ';
         }
         cout << '\n';
-	}
-	return 0;
+    }
+    return 0;
 }
