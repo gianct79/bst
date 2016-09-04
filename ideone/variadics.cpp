@@ -33,7 +33,7 @@ struct call_with_tuple_impl {
     )
   )
   {
-  	static_assert(
+    static_assert(
       Index == sizeof...(args),
       "we expect Index arguments to have been extracted so far"
     );
@@ -45,7 +45,7 @@ struct call_with_tuple_impl {
       std::forward<TArgs>(args)...,
       // and append the Index-th argument that we're extracting
       std::get<Index>(
-      	std::forward<TTuple>(tuple)
+        std::forward<TTuple>(tuple)
       )
     );
   }
@@ -58,17 +58,17 @@ struct call_with_tuple_impl<Size, Size> {
   static auto call(TCallable &&callable, TTuple &&tuple, TArgs &&...args)
     -> decltype(callable(std::forward<TArgs>(args)...))
   {
-  	static_assert(
-  	  std::tuple_size<
-  	    typename std::decay<TTuple>::type
-  	  >::value == sizeof...(TArgs),
-  	  "we expect to have already extracted all arguments"
-  	);
+    static_assert(
+      std::tuple_size<
+        typename std::decay<TTuple>::type
+      >::value == sizeof...(TArgs),
+      "we expect to have already extracted all arguments"
+    );
 
-  	// let's make the call since we're done extracting args
-  	return callable(
-  	  std::forward<TArgs>(args)...
-  	);
+    // let's make the call since we're done extracting args
+    return callable(
+      std::forward<TArgs>(args)...
+    );
   }
 };
 
@@ -77,9 +77,9 @@ struct call_with_tuple_impl<Size, Size> {
 template <typename TCallable, typename TTuple>
 auto call_with_tuple(TCallable &&callable, TTuple &&tuple)
   -> decltype(
-  	detail::call_with_tuple_impl<
-  	  0, std::tuple_size<typename std::decay<TTuple>::type>::value
-  	>::call(
+    detail::call_with_tuple_impl<
+      0, std::tuple_size<typename std::decay<TTuple>::type>::value
+    >::call(
       std::forward<TCallable>(callable),
       std::forward<TTuple>(tuple)
     )
@@ -89,8 +89,8 @@ auto call_with_tuple(TCallable &&callable, TTuple &&tuple)
   return detail::call_with_tuple_impl<
     0, std::tuple_size<typename std::decay<TTuple>::type>::value
   >::call(
-  	std::forward<TCallable>(callable),
-  	std::forward<TTuple>(tuple)
+    std::forward<TCallable>(callable),
+    std::forward<TTuple>(tuple)
   );
 }
 

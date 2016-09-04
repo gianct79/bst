@@ -35,9 +35,9 @@ class C : public B {
 
 int main() {
 
-	C c;
-	B b;
-	A a;
+    C c;
+    B b;
+    A a;
 
     return 0;
 

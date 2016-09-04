@@ -20,5 +20,5 @@ int main() {
         }
         cout << q.front() << '\n';
     }
-	return 0;
+    return 0;
 }

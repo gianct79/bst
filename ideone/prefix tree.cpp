@@ -54,14 +54,14 @@ using dictionary = unordered_set<string>;
 
 dictionary build_dictionary() {
     dictionary out;
-	out.insert("she");
-	out.insert("sells");
-	out.insert("sea");
-	out.insert("shells");
-	out.insert("by");
-	out.insert("the");
-	out.insert("sears");
-	out.insert("shore");
+    out.insert("she");
+    out.insert("sells");
+    out.insert("sea");
+    out.insert("shells");
+    out.insert("by");
+    out.insert("the");
+    out.insert("sears");
+    out.insert("shore");
     return out;
 }
 

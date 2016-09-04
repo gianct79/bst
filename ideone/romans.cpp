@@ -25,13 +25,13 @@ int main(int argc, char* argv[]) {
 
     while (value > 0) {
 
-		std::cout << value << ": ";
-		std::stringstream ss;
+        std::cout << value << ": ";
+        std::stringstream ss;
 
         for (auto it = romanDict.rbegin(); it != romanDict.rend(); ++it) {
 
-			for (size_t r = value / it->first; r > 0; --r)
-				ss << romanDict[it->first];
+            for (size_t r = value / it->first; r > 0; --r)
+                ss << romanDict[it->first];
 
             value = value % it->first;
         }

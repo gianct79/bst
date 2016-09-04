@@ -18,9 +18,9 @@ unsigned short reverse_bits(unsigned short n) {
 }
 
 int main() {
-	unsigned short n = 3560;
-	cout << "input =" << std::dec << n << " (hex=0x" << std::hex << n << ", binary=0b" << std::bitset<16>(n) << ")\n";
-	unsigned short r = reverse_bits(n);
-	cout << "output=" << std::dec << r << " (hex=0x" << std::hex << r << ", binary=0b" << std::bitset<16>(r) << ")\n";
-	return 0;
+    unsigned short n = 3560;
+    cout << "input =" << std::dec << n << " (hex=0x" << std::hex << n << ", binary=0b" << std::bitset<16>(n) << ")\n";
+    unsigned short r = reverse_bits(n);
+    cout << "output=" << std::dec << r << " (hex=0x" << std::hex << r << ", binary=0b" << std::bitset<16>(r) << ")\n";
+    return 0;
 }

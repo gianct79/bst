@@ -34,11 +34,11 @@ int main() {
     alphabet cipher = create_cipher(k);
     for (auto &c : s) {
         if (islower(c))
-        	c = tolower(cipher_char(toupper(c), k));
+            c = tolower(cipher_char(toupper(c), k));
             //c = tolower(cipher[toupper(c) - 'A']);
         else if (isupper(c))
-        	c = cipher_char(c, k);
+            c = cipher_char(c, k);
             //c = cipher[c - 'A'];
     }
-   	cout << s << '\n';
+    cout << s << '\n';
 }

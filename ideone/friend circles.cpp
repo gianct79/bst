@@ -61,37 +61,37 @@ int main() {
     TEST(2, "YYNY", "YYNN", "NNYN", "YNNY");
     TEST(1, "YYYY", "YYYY", "YYYY", "YYYY");
     TEST(0);
-	TEST(1, "Y");
+    TEST(1, "Y");
     TEST(2,
       "YYNY",
       "YYNN",
       "NNYN",
       "YNNY"
     );
-	TEST(2,
-	  "YNYNNY",
-	  "NYYNNN",
-	  "YYYNNY",
-	  "NNNYYN",
-	  "NNNYYN",
-	  "YNYNNY",
-	);
-	TEST(3,
-	  "YNYNNY",
-	  "NYNNNN",
-	  "YNYNNY",
-	  "NNNYYN",
-	  "NNNYYN",
-	  "YNYNNY",
-	);
-	TEST(6,
-	  "YNNNNN",
-	  "NYNNNN",
-	  "NNYNNN",
-	  "NNNYNN",
-	  "NNNNYN",
-	  "NNNNNY",
-	);
+    TEST(2,
+      "YNYNNY",
+      "NYYNNN",
+      "YYYNNY",
+      "NNNYYN",
+      "NNNYYN",
+      "YNYNNY",
+    );
+    TEST(3,
+      "YNYNNY",
+      "NYNNNN",
+      "YNYNNY",
+      "NNNYYN",
+      "NNNYYN",
+      "YNYNNY",
+    );
+    TEST(6,
+      "YNNNNN",
+      "NYNNNN",
+      "NNYNNN",
+      "NNNYNN",
+      "NNNNYN",
+      "NNNNNY",
+    );
 
     return 0;
 }

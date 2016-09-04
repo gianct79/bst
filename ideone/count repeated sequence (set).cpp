@@ -16,17 +16,17 @@ int main() {
 
     set<string, bucha> a;
 
-	if (s.length()) {
-	    string t {s[0]};
-	    for (int i = 1; i < s.length(); ++i) {
-	        if (s[i - 1] != s[i]) {
-	            a.insert(t);
-	            t.clear();
-	        }
-	        t += s[i];
-	    }
-	    a.insert(t);
-	    cout << *a.begin() << '\n';
-	}
+    if (s.length()) {
+        string t {s[0]};
+        for (int i = 1; i < s.length(); ++i) {
+            if (s[i - 1] != s[i]) {
+                a.insert(t);
+                t.clear();
+            }
+            t += s[i];
+        }
+        a.insert(t);
+        cout << *a.begin() << '\n';
+    }
     return 0;
 }

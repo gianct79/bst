@@ -150,23 +150,23 @@ struct binary_tree {
     }
 
     static void diag_order_u(node_type *node, int d, map<T, vector<T>> &dd) {
-    	if (!node)
-    		return;
-    	dd[d].push_back(node->value);
-    	diag_order_u(node->left, d + 1, dd);
-    	diag_order_u(node->right, d, dd);
+        if (!node)
+            return;
+        dd[d].push_back(node->value);
+        diag_order_u(node->left, d + 1, dd);
+        diag_order_u(node->right, d, dd);
     }
 
 
     template<typename output_type>
     static void diag_order(output_type &out, node_type *node) {
-    	map<T, vector<T>> dd;
-    	diag_order_u(node, 0, dd);
-    	for (auto &i : dd) {
-    		for (auto &j : i.second) {
-    			cout << j << ' ';
-    		}
-    	}
+        map<T, vector<T>> dd;
+        diag_order_u(node, 0, dd);
+        for (auto &i : dd) {
+            for (auto &j : i.second) {
+                cout << j << ' ';
+            }
+        }
     }
 
     template<typename output_type>

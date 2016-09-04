@@ -21,7 +21,7 @@ struct matrix {
         for (auto i = 0; i < _data.size(); ++i) {
             for (auto j = 0 ; j < _data.size() / 2; ++j) {
                 swap(_data[i][j], _data[i][_data.size() - j - 1]);
-    	    }
+            }
         }
         // change rows to rotate left
     }

@@ -70,9 +70,9 @@ int main() {
 
     binary_heap<int, std::greater<int>> b;
 
-  	//b.push(1);
-  	//b.push(6);
-  	//b.push(3);
+    //b.push(1);
+    //b.push(6);
+    //b.push(3);
 
     while (!b.empty()) {
         std::cout << b.top() << ' ';

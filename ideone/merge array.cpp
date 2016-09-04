@@ -10,7 +10,7 @@ int main() {
 
     vector<range> input = {{4,7}, {11,15}, {1,3}, {6,9}, {1,2}};
 
-	sort(input.begin(), input.end());
+    sort(input.begin(), input.end());
 
     vector<range> output;
 

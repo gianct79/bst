@@ -18,10 +18,10 @@ void factorial(int n) {
             digits.push_back(dv.rem);
             carry = dv.quot;
         }
-		cout << i << "! = ";
-    	for (auto it = digits.rbegin(); it != digits.rend(); ++it)
-        	cout << *it;
-    	cout << '\n';
+        cout << i << "! = ";
+        for (auto it = digits.rbegin(); it != digits.rend(); ++it)
+            cout << *it;
+        cout << '\n';
     }
 }
 

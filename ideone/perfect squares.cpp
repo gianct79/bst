@@ -13,11 +13,11 @@ set<int> generate_perfect_squares(unsigned limit) {
 }
 
 unsigned count_perfect_squares(unsigned lbound, unsigned ubound) {
-	unsigned cnt = 0;
-	for (unsigned i = ceil(sqrt(lbound)); i * i <= ubound; ++i) {
-  		++cnt;	
-	}
-	return cnt;
+    unsigned cnt = 0;
+    for (unsigned i = ceil(sqrt(lbound)); i * i <= ubound; ++i) {
+        ++cnt;	
+    }
+    return cnt;
 }
 
 int main() {
@@ -25,7 +25,7 @@ int main() {
     unsigned lbound, ubound;
     cin >> lbound >> ubound;
 
-	cout << count_perfect_squares(lbound, ubound);
+    cout << count_perfect_squares(lbound, ubound);
 
     /*set<int> perfect_squares = generate_perfect_squares(100);
     unsigned cnt = 0;
