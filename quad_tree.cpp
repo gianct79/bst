@@ -79,11 +79,11 @@ struct quad_tree {
     void split() {
         point qsize {bounds_.hsize_.x_, bounds_.hsize_.y_};
         point qcenter {bounds_.center_.x_ - qsize.x_, bounds_.center_.y_ - qsize.y_};
-        nw_ = new quad_tree{{qcenter, qsize}};
+        nw_ = new quad_tree {{qcenter, qsize}};
         qcenter = {bounds_.center_.x_ + qsize.x_, bounds_.center_.y_ - qsize.y_};
-        ne_ = new quad_tree{{qcenter, qsize}};
+        ne_ = new quad_tree {{qcenter, qsize}};
         qcenter = {bounds_.center_.x_ - qsize.x_, bounds_.center_.y_ + qsize.y_};
-        sw_ = new quad_tree{{qcenter, qsize}};
+        sw_ = new quad_tree {{qcenter, qsize}};
         qcenter = {bounds_.center_.x_ + qsize.x_, bounds_.center_.y_ + qsize.y_};
         se_ = new quad_tree {{qcenter, qsize}};
     }
@@ -124,17 +124,23 @@ struct quad_tree {
                 in.push_back(o);
             }
         }
-        if (!nw_) {
-            return in;
+        vector<data<T>> temp;
+        if (nw_) {
+        	temp = nw_->query(range);
+        	in.insert(in.end(), temp.begin(), temp.end());
         }
-        vector<data<T>> temp = nw_->query(range);
-        in.insert(in.end(), temp.begin(), temp.end());
-        temp = ne_->query(range);
-        in.insert(in.end(), temp.begin(), temp.end());
-        temp = sw_->query(range);
-        in.insert(in.end(), temp.begin(), temp.end());
-        temp = se_->query(range);
-        in.insert(in.end(), temp.begin(), temp.end());
+        if (ne_) {
+        	temp = ne_->query(range);
+        	in.insert(in.end(), temp.begin(), temp.end());
+        }
+        if (sw_) {
+        	temp = sw_->query(range);
+        	in.insert(in.end(), temp.begin(), temp.end());
+        }
+        if (se_) {
+        	temp = se_->query(range);
+        	in.insert(in.end(), temp.begin(), temp.end());
+        }
         return in;
     }
 };
@@ -143,7 +149,19 @@ template <typename T>
 ostream &operator<<(ostream &out, const quad_tree<T> &qt) {
     out << qt.bounds_ << '\n';
     for (auto &i : qt.data_) {
-        cout << i.pt_ << ": " << i.data_ << '\n';
+        out << i.pt_ << ": " << i.data_ << '\n';
+        if (qt.nw_) {
+        	out << *qt.nw_;
+        }
+        if (qt.ne_) {
+        	out << *qt.ne_;
+        }
+        if (qt.sw_) {
+        	out << *qt.sw_;
+        }
+        if (qt.se_) {
+        	out << *qt.se_;
+        }
     }
     return out;
 }
@@ -154,8 +172,10 @@ int main() {
         {{-2.f,-2.f}, "Rua do Menonc"},
         {{-1.f,-1.f}, "Rua do Viccari"},
         {{0.f,0.f}, "Rua do Xcao"},
-        {{1.f,1.f}, "Rua do Bruño"},
-        {{2.f,2.f}, "Rua do Gião"}
+        {{1.f,1.f}, "Rua do BruÃ±o"},
+        {{2.f,2.f}, "Rua do GiÃ£o"},
+        {{2.f,-2.f}, "Rua do ViVi"},
+        {{-.5f,-1.f}, "Rua do Piui"}
     };
 
     bounding_box world {{0.f,0.f}, {2.5f,2.5f}};
@@ -163,9 +183,10 @@ int main() {
     for (auto &d : data) {
         qt.insert(d);
     }
+    cout << "World definition:\n";
     cout << qt << '\n';
 
-    cout << "Type bounding boxes (center x y, size x y) queries\n";
+    cout << "Type bounding boxes (center {x y} size {x y}) queries\n";
     bounding_box bb;
     while (cin >> bb) {
         auto q = qt.query(bb);
