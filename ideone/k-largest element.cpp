@@ -9,7 +9,7 @@ template <typename T, typename U = std::less<T>>
 struct k_elements {
     unsigned k_;
     vector<T> v_;
-    U u_ = U();
+    U u_;
 
     typedef typename vector<T>::const_iterator const_iterator;
 
