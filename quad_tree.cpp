@@ -126,20 +126,20 @@ struct quad_tree {
         }
         vector<data<T>> temp;
         if (nw_) {
-        	temp = nw_->query(range);
-        	in.insert(in.end(), temp.begin(), temp.end());
+            temp = nw_->query(range);
+            in.insert(in.end(), temp.begin(), temp.end());
         }
         if (ne_) {
-        	temp = ne_->query(range);
-        	in.insert(in.end(), temp.begin(), temp.end());
+            temp = ne_->query(range);
+            in.insert(in.end(), temp.begin(), temp.end());
         }
         if (sw_) {
-        	temp = sw_->query(range);
-        	in.insert(in.end(), temp.begin(), temp.end());
+            temp = sw_->query(range);
+            in.insert(in.end(), temp.begin(), temp.end());
         }
         if (se_) {
-        	temp = se_->query(range);
-        	in.insert(in.end(), temp.begin(), temp.end());
+            temp = se_->query(range);
+            in.insert(in.end(), temp.begin(), temp.end());
         }
         return in;
     }
@@ -151,16 +151,16 @@ ostream &operator<<(ostream &out, const quad_tree<T> &qt) {
     for (auto &i : qt.data_) {
         out << i.pt_ << ": " << i.data_ << '\n';
         if (qt.nw_) {
-        	out << *qt.nw_;
+            out << *qt.nw_;
         }
         if (qt.ne_) {
-        	out << *qt.ne_;
+            out << *qt.ne_;
         }
         if (qt.sw_) {
-        	out << *qt.sw_;
+            out << *qt.sw_;
         }
         if (qt.se_) {
-        	out << *qt.se_;
+            out << *qt.se_;
         }
     }
     return out;
