@@ -133,20 +133,25 @@ struct binary_tree {
     template<typename output_type>
     static void post_order_i(output_type &out, node_type *node) {
         stack<node_type*> q;
-        node_type *curr = nullptr, *prev = nullptr;
-        q.push(node);
-        while (!q.empty()) {
+        node_type *curr = node;
+        do {
+            while (curr) {
+                if (curr->right) {
+                    q.push(curr->right);
+                }
+                q.push(curr);
+                curr = curr->left;
+            }
             curr = q.top(); q.pop();
-            if ((curr->right && prev == curr->right) || 
-                (!curr->right && curr->left && prev == curr->left) || 
-                (!curr->right && !curr->left)) {
+            if (curr->right && !q.empty() && q.top() == curr->right) {
+                q.pop();
+                q.push(curr);
+                curr = curr->right;
+            } else {
                 out << curr->value;
-                prev = curr;
-            } else if (curr->left && prev != curr->left) {
-                q.push(curr->left);
-            } else if (curr->right)
-                q.push(curr->right);
-        }
+                curr = nullptr;
+            }
+        } while (!q.empty());
     }
 
     static void diag_order_u(node_type *node, int d, map<T, vector<T>> &dd) {
