@@ -31,6 +31,32 @@ node *get_lca(node *root, node *a, node *b) {
     return last;
 }
 
+node *get_lca_2(node *root, node *a, node *b) {
+    if (!root || root->value == a->value || root->value == b->value) {
+        return root;
+    }
+    node *l = get_lca_2(root->children[0], a, b);
+    node *r = get_lca_2(root->children[1], a, b);
+    if (l && r) {
+        return root; // if a->value, b->value are on both sides
+    }
+    return l ? l : r; // either one of a->value, b->value is on one side OR a->value, b->value is not in left & right subtrees
+}
+
+bool find(node *root, char v) {
+    if (!root) {
+        return false;
+    }
+    if (root->value == v) {
+        return true;
+    }
+    for (auto &n : root->children) {
+        if (find(n, v)) {
+            return true;
+        }
+    }
+    return false;
+}
 
 int main()
 {
