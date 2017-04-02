@@ -50,9 +50,9 @@ vector<string> prefix(vector<string> const &v) {
 
 
 int main() {
-	auto ret = prefix({"zebra", "dog", "duck", "dot"});
-	for (auto &it : ret) {
-		cout << it << ' ';
-	}
-	return 0;
+    auto ret = prefix({"zebra", "dog", "duck", "dot"});
+    for (auto &it : ret) {
+        cout << it << ' ';
+    }
+    return 0;
 }
