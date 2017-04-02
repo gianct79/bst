@@ -6,7 +6,6 @@ struct node {
     std::vector<node*> children;
 };
 
-
 node *get_lca(node *root, node *a, node *b) {
 
     if (root == nullptr)
@@ -58,6 +57,23 @@ bool find(node *root, char v) {
     return false;
 }
 
+bool path(node *root, char v, std::vector<char> &p) {
+    if (!root) {
+        return false;
+    }
+    if (root->value == v) {
+        p.push_back(root->value);
+        return true;
+    }
+    for (auto &n : root->children) {
+        if (path(n, v, p)) {
+            p.push_back(root->value);
+            return true;
+        }
+    }
+    return false;
+}
+
 int main()
 {
     node f { 'F' };
@@ -70,7 +86,7 @@ int main()
 
     node c { 'C' };
     node d { 'D' };
-    node a { 'A', { &b, &c, &d } }; 
+    node a { 'A', { &b, &c, &d } };
 
     std::cout << get_lca(&a, &a, &a)->value << '\n';
     std::cout << get_lca(&a, &f, &g)->value << '\n';
@@ -78,5 +94,5 @@ int main()
     std::cout << get_lca(&a, &f, &d)->value << '\n';
     std::cout << get_lca(&a, &e, &g)->value << '\n';
 
-    return 0;    
+    return 0;
 }
