@@ -39,20 +39,20 @@ int minDistance(string const &A, string const &B) {
 
 
 int main() {
-	string A = "Anshuman";
-	string B = "Antihuman";
-	
-	cout << minDistance(A, B) << '\n';
-	
-	A = "";
-	B = "die";
-	
-	cout << minDistance(A, B) << '\n';
+    string A = "Anshuman";
+    string B = "Antihuman";
 
-	A = "foo";
-	B = "bar";
+    cout << minDistance(A, B) << '\n';
 
-	cout << minDistance(A, B) << '\n';
+    A = "";
+    B = "die";
 
-	return 0;
+    cout << minDistance(A, B) << '\n';
+
+    A = "foo";
+    B = "bar";
+
+    cout << minDistance(A, B) << '\n';
+
+    return 0;
 }
