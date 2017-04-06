@@ -4,7 +4,7 @@
 using namespace std;
 
 void sortColors(vector<int> &A) {
-	if (A.size() < 2) {
+    if (A.size() < 2) {
         return;
     }
 
