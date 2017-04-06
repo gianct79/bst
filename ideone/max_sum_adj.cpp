@@ -24,7 +24,7 @@ unsigned maxSum(vector<unsigned> const &v) {
 
 pair<unsigned, unsigned> maxPos(vector<unsigned> const &v) {
 
-	pair<unsigned, unsigned> ret;
+    pair<unsigned, unsigned> ret;
     unsigned max = 0, sum = 0, min = 0;
 
     for (unsigned i = 1; i < v.size(); ++i) {
@@ -46,8 +46,8 @@ pair<unsigned, unsigned> maxPos(vector<unsigned> const &v) {
 }
 
 std::ostream &operator<<(ostream &out, pair<unsigned, unsigned> const &p) {
-	out << '{' << p.first << ',' << p.second << '}';
-	return out;
+    out << '{' << p.first << ',' << p.second << '}';
+    return out;
 }
 
 int main() {
