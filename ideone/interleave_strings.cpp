@@ -48,14 +48,14 @@ using namespace std;
 
 using point = pair<int, int>;
 
-namespace std {
+/*namespace std {
     template <>
     struct hash<point> {
         size_t operator () (point const &f) const {
             return (std::hash<int>()(f.first) << 1) ^ std::hash<int>()(f.second);
         }
     };
-}
+}*/
 
 bool isInterleave(string const &s1, string const &s2, string const &s3) {
 
@@ -64,8 +64,7 @@ bool isInterleave(string const &s1, string const &s2, string const &s3) {
     }
 
     stack<point> q;
-    unordered_set<point> v;
-
+    //unordered_set<point> v;
     q.push({ 0, 0 });
 
     while (!q.empty()) {
@@ -77,10 +76,10 @@ bool isInterleave(string const &s1, string const &s2, string const &s3) {
         if (p.first == s1.size() && p.second == s2.size()) {
             return true;
         }
-        if (v.count(p)) { // visited?
-            continue;
-        }
-        v.insert(p);
+        //if (v.count(p)) { // visited?
+        //    continue;
+        //}
+        //v.insert(p);
 
         auto i = p.first + p.second;
 
@@ -103,10 +102,8 @@ int main() {
     cout << isInterleave("aab", "abc", "aaabcb") << '\n';
     cout << isInterleave("aab", "abc", "abaacb") << '\n';
     cout << isInterleave("aab", "abc", "abaabd") << '\n';
-    //cout << isInterleave("aab", "abc", "aaabbc") << '\n';
-    //cout << isInterleave("aab", "abc", "abacab") << '\n';
-
-    getchar();
+    cout << isInterleave("aab", "abc", "aaabbc") << '\n';
+    cout << isInterleave("aab", "abc", "abacab") << '\n';
 
     return 0;
 }
