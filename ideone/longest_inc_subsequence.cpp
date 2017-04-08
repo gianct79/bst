@@ -4,7 +4,7 @@
 using namespace std;
 
 int lis(vector<int> const &A) {
-	auto n = A.size();
+    auto n = A.size();
     vector<int> lis(n, 1);
 
     int i, j, max = 0;
