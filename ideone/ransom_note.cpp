@@ -22,14 +22,14 @@ bool ransom_note(vector<string> const &magazine, vector<string> const &ransom) {
 }
 
 bool ransom_note_order(vector<string> const &magazine, vector<string> const &ransom) {
-	for (auto  rit = ransom.begin(), mit = magazine.begin(); rit != ransom.end(); ++rit) {
-		while (*rit != *mit && mit != magazine.end()) {
-			++mit;
+    for (auto  rit = ransom.begin(), mit = magazine.begin(); rit != ransom.end(); ++rit) {
+        while (*rit != *mit && mit != magazine.end()) {
+            ++mit;
         }
-		if (mit == magazine.end()) {
-			return false;
+        if (mit == magazine.end()) {
+            return false;
         }
-	}
+    }
     return true;
 }
 
