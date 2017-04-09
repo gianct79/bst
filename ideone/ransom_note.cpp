@@ -7,10 +7,10 @@ using namespace std;
 
 bool ransom_note(vector<string> const &magazine, vector<string> const &ransom) {
     unordered_multiset<string> dict;
-    for (string &s : magazine) {
+    for (string const &s : magazine) {
         dict.insert(s);
     }
-    for (string &s : ransom) {
+    for (string const &s : ransom) {
         auto it = dict.find(s);
         if (it != dict.end()) {
             dict.erase(it);
@@ -18,6 +18,18 @@ bool ransom_note(vector<string> const &magazine, vector<string> const &ransom) {
             return false;
         }
     }
+    return true;
+}
+
+bool ransom_note_order(vector<string> const &magazine, vector<string> const &ransom) {
+	for (auto  rit = ransom.begin(), mit = magazine.begin(); rit != ransom.end(); ++rit) {
+		while (*rit != *mit && mit != magazine.end()) {
+			++mit;
+        }
+		if (mit == magazine.end()) {
+			return false;
+        }
+	}
     return true;
 }
 
