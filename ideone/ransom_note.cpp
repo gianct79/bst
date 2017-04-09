@@ -5,7 +5,7 @@
 
 using namespace std;
 
-bool ransom_note(vector<string> magazine, vector<string> ransom) {
+bool ransom_note(vector<string> const &magazine, vector<string> const &ransom) {
     unordered_multiset<string> dict;
     for (string &s : magazine) {
         dict.insert(s);
