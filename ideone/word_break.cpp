@@ -6,14 +6,10 @@ using namespace std;
 
 // helper function (not good)
 /*bool wordBreak(string const &str, unordered_set<string> const &dict) {
-
     int sz = str.size();
-
     if (sz == 0) {
         return true;
     }
-
-    // try all prefixes of lengths from 1 to size
     for (int i = 1; i <= sz; ++i) {
         // check whether current prefix is in dictionary
         // recursively check for remaining string suffix of length size-i
@@ -21,53 +17,30 @@ using namespace std;
             return true;
         }
     }
-
     // tried all prefixes and none worked
     return false;
 }*/
 
-// helper function
+// helper function (memorize steps)
 bool wordBreak(string const &str, unordered_set<string> const &dict) {
-
     int sz = str.size();
-
     if (sz == 0) {
         return true;
     }
-
-    // wb[i] will be true if str[0..i-1] can be segmented into dict words
     vector<bool> wb(sz + 1);
-
-    // try all prefixes of lengths from 1 to size
+    wb[0] = true;
     for (int i = 1; i <= sz; ++i) {
-        
-        // wb[i] is false, check if current prefix can make it true
-        if (!wb[i] && dict.count(str.substr(0, i))) {
-            wb[i] = true;
-        }
-
-        if (wb[i]) {
-            // reached the last prefix
-            if (i == sz) {
-                return true;
-            }
-
-            for (int j = i + 1; j <= sz; ++j) {
-                // update wb[j] if it can be updated
-                if (wb[j] == false && dict.count(str.substr(i, j - i))) {
-                    wb[j] = true;
-                }
-
-                // last character reached
-                if (j == sz && wb[j]) {
-                    return true;
+        for (int j = i-1; j >= 0; --j) {
+            if (wb[j]) {
+                auto word = str.substr(j, i-j);
+                if (dict.count(word)) {
+                    wb[i] = true;
+                    break;
                 }
             }
         }
     }
-
-    // tried all prefixes and none worked
-    return false;
+    return wb[sz];
 }
 
 int main() {
