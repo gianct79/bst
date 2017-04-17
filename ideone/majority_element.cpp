@@ -5,12 +5,12 @@
 using namespace std;
 
 int main() {
-	vector<int> v;
-	int i;
-	while (cin >> i) {
-		v.push_back(i);
-	}
-	auto n = v.size();
+    vector<int> v;
+    int i;
+    while (cin >> i) {
+        v.push_back(i);
+    }
+    auto n = v.size();
     map<int, int> m; // element count
     int ans = 0;
     for (auto &i : v) {
@@ -21,5 +21,5 @@ int main() {
         }
     }
     cout << ans << '\n';
-	return 0;
+    return 0;
 }
