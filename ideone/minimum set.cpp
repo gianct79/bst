@@ -14,7 +14,7 @@ int main() {
     vector<pair<int, int>> m;
     m.push_back(v[0]);
     for (int i = 1; i < v.size(); ++i) {
-        auto &l = m[m.size() - 1];
+        auto &l = m.back();
         if (l.second > v[i].first) {
             l.second = max(l.second, v[i].second);
         } else {
