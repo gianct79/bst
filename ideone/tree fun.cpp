@@ -154,6 +154,24 @@ struct binary_tree {
         } while (!q.empty());
     }
 
+    template<typename output_type>
+    static void level_order(output_type &out, node_type *node) {
+        queue<node_type*> curr, next;
+        curr.push(node);
+        while (!curr.empty()) {
+            auto tmp = curr.front(); curr.pop();
+            if (tmp) {
+                cout << tmp->value << ' ';
+                next.push(tmp->left);
+                next.push(tmp->right);
+            }
+            if (curr.empty()) {
+                //cout << '\n';
+                std::swap(next, curr);
+            }
+        }
+    }
+
     static void diag_order_u(node_type *node, int d, map<T, vector<T>> &dd) {
         if (!node)
             return;
@@ -161,7 +179,6 @@ struct binary_tree {
         diag_order_u(node->left, d + 1, dd);
         diag_order_u(node->right, d, dd);
     }
-
 
     template<typename output_type>
     static void diag_order(output_type &out, node_type *node) {
