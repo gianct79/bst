@@ -44,29 +44,26 @@ ostream &operator<<(ostream &out, node* list) {
 }*/
 
 node *clone(node *list) {
-	node *curr = list;
-	// insert the new motherfuckers between the old ones
-	while (curr) {
-		curr->next = new node{ curr->val, curr->next };
-		curr = curr->next->next;
-	}
-	curr = list;
-	// adjust the fucking random pointers
-	while (curr) {
-		curr->next->rand = curr->rand ? curr->rand->next : nullptr;
-		curr = curr->next->next;
-	}
-	curr = list;
-	node *copy = curr->next;
-	node *head = copy;
-	// adjust next pointers (cleanup)
-	while (curr && copy) {
-		curr->next = curr->next ? curr->next->next : nullptr;
-		copy->next = copy->next ? copy->next->next : nullptr;
-		copy = copy->next;
-		curr = curr->next;
-	}
-	return head;
+    node *curr = list;
+    while (curr) {
+        curr->next = new node { curr->val, curr->next };
+        curr = curr->next->next;
+    }
+    curr = list;
+    while (curr) {
+        curr->next->rand = curr->rand ? curr->rand->next : nullptr;
+        curr = curr->next->next;
+    }
+    curr = list;
+    node *copy = curr->next;
+    node *head = copy;
+    while (curr && copy) {
+        curr->next = curr->next ? curr->next->next : nullptr;
+        copy->next = copy->next ? copy->next->next : nullptr;
+        curr = curr->next;
+        copy = copy->next;
+    }
+    return head;
 }
 
 int main() {
@@ -83,7 +80,7 @@ int main() {
 
     cout << a << '\n';
     auto m = clone(a);
-	delete a; delete b; delete c; delete d; delete e;
+    delete a; delete b; delete c; delete d; delete e;
     cout << m << '\n';
 
     return 0;
