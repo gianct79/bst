@@ -3,9 +3,9 @@
 
 void sort012(std::vector<int> &v) {
 	int lo = 0;
-	int hi = v.size() - 1;
+	int hi = v.size();
 	int i = 0;
-	while (i <= hi) {
+	while (i < hi) {
 		switch (v[i]) {
 			case 0:
 				std::swap(v[lo++], v[i++]);
@@ -14,7 +14,7 @@ void sort012(std::vector<int> &v) {
 				i++;
 				break;
 			case 2:
-				std::swap(v[i], v[hi--]);
+				std::swap(v[i], v[--hi]);
 				break;
 			default:
 				i++;
