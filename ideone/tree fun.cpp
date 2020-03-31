@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+#include <queue>
 #include <map>
 
 using namespace std;
@@ -166,9 +167,23 @@ struct binary_tree {
                 next.push(tmp->right);
             }
             if (curr.empty()) {
-                //cout << '\n';
                 std::swap(next, curr);
             }
+        }
+    }
+
+    template<typename output_type>
+    static void level_order_i(output_type &out, node_type *root) {
+        queue<node_type*> q;
+        q.push(root);
+        while (!q.empty()) {
+            node_type* v = q.front();
+            q.pop();
+            if (!v)
+                continue;
+            q.push(v->left);
+            q.push(v->right);
+            out << v->value << ' ';
         }
     }
 
@@ -191,6 +206,37 @@ struct binary_tree {
         }
     }
 
+    static size_t height(node_type *root) {
+      if (!root) {
+            return 0;
+        }
+        return 1 + std::max(height(root->left), height(root->right));
+    }
+
+    static size_t height_i(node_type *root) {
+        size_t r = 0;
+
+        queue<node_type*> q;
+        q.push(root);
+        q.push(nullptr);
+
+        while (node_type* v = q.front()) {
+            q.pop();
+            if (v->left != nullptr)
+                q.push(v->left);
+            if (v->right != nullptr)
+                q.push(v->right);
+
+            if (!q.front()) {
+                q.pop();
+                q.push(nullptr);
+                r++;
+            }
+        }
+
+        return r;
+    }
+
     template<typename output_type>
     static void print(output_type &out, node_type *root, size_t depth = 0, char connector = '+') {
         if (!root)
@@ -206,23 +252,30 @@ struct binary_tree {
 
 int main() {
     using int_vector = vector<int>;
-    int_vector v = {1, 2, 3, 4, 5, 6, 7};
+    int_vector v = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
 
     using int_tree = binary_tree<int_vector::value_type>;
 
     int_tree::node_type *a = int_tree::build(&v[0], v.size());
-    //int_tree::print(cout, a);
+    int_tree::print(cout, a);
+    cout << int_tree::height(a) << '\n';
+    cout << int_tree::height_i(a) << '\n';
     int_tree::in_order_i(cout, a);
     cout << '\n';
     int_tree::pre_order_i(cout, a);
     cout << '\n';
     int_tree::diag_order(cout, a);
     cout << '\n';
+    int_tree::level_order(cout, a);
+    cout << '\n';    
 
     v = {7, 6, 5, 4, 3, 2, 1};
     int_tree::node_type *b = int_tree::build(&v[0], v.size());
-    //int_tree::print(cout, b);
-
+    int_tree::print(cout, b);
+    cout << int_tree::height(b) << '\n';
+    cout << int_tree::height_i(b) << '\n';
+    int_tree::level_order_i(cout, b);
+    cout << '\n';    
     //int_tree::reverse_i(root);
     //int_tree::print(cout, root);
 
