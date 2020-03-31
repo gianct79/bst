@@ -222,9 +222,9 @@ struct binary_tree {
 
         while (node_type* v = q.front()) {
             q.pop();
-            if (v->left != nullptr)
+            if (v->left)
                 q.push(v->left);
-            if (v->right != nullptr)
+            if (v->right)
                 q.push(v->right);
 
             if (!q.front()) {
